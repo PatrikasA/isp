@@ -10,6 +10,25 @@ namespace Faxai.Controllers
             return View();
         }
 
+        public IActionResult Orders() 
+        {
+            return View();
+        }
+
+        public IActionResult DeliveryInfo()
+        {
+            return View();
+        }
+        public IActionResult SubmitDeliveryInfo()
+        {
+            return RedirectToAction("DeliveryInfo");
+
+        }
+        public IActionResult DeliveryForm()
+        {
+            return View();
+        }
+
         public IActionResult BlockUser()
         {
 
