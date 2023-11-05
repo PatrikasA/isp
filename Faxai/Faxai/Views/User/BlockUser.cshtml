@@ -1,0 +1,10 @@
+﻿
+<h2>Blokuoti vartotoją</h2>
+<p>Ar tikrai norite blokuoti vartotoją?</p>
+
+<form asp-controller="User" asp-action="ConfirmBlockUser" method="post">
+    <input type="hidden" name="userId"/>
+    <button type="submit" class="btn btn-warning">Patvirtinti</button>
+    <a href="@Url.Action("UserInfo", "User")" class="btn btn-secondary">Atšaukti</a>
+
+</form>
