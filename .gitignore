@@ -1,0 +1,16 @@
+# Ignore Visual Studio files
+.vscode/
+.vs/
+Faxai/Faxai/bin/
+Faxai/Faxai/obj/
+
+# Ignore .NET and Visual Studio user-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Ignore build output and logs
+*.log
+logs/

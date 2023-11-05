@@ -1,0 +1,7 @@
+@font-face {
+    font-family: 'Aristotelica';
+    src: url('..\AristotelicaFont.woff2') format('woff2');
+}
+.header {
+    font-family: 'Aristotelica', sans-serif;
+}
