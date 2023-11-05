@@ -1,6 +1,41 @@
-﻿@{
+﻿@using Faxai.Models.PageSystemModels;
+@model IEnumerable<PageLog>
+@{
     ViewData["Title"] = "Puslapio statistika";
 }
 <h1>@ViewData["Title"]</h1>
 
 <p>Puslapio statistikos informacija su galimybe ja filtruoti</p>
+<table class="table table-dark">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Kategorija</th>
+            <th scope="col">Aprašymas</th>
+            <th scope="col">Nuoroda</th>
+            <th scope="col">Data</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var mail in Model)
+        {
+            <tr>
+                <td>
+                    @mail.PageLogID
+                </td>
+                <td>
+                    @mail.Category
+                </td>
+                <td>
+                    @mail.Description
+                </td>
+                <td>
+                    @mail.Url
+                </td>
+                <td>
+                    @mail.Date
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

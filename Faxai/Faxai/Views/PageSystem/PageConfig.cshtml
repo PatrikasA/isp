@@ -1,6 +1,36 @@
-﻿@{
+﻿@model IEnumerable<PageConfig>
+@{
     ViewData["Title"] = "Puslapio nustatymai";
 }
 <h1>@ViewData["Title"]</h1>
 
 <p>Puslapio nustatymų įvedimas ir redagavimas, kartu su manipuliacijos forma</p>
+<table class="table table-dark">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Kodas</th>
+            <th scope="col">Aprašymas</th>
+            <th scope="col">Reikšmė</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var mail in Model)
+    {
+        <tr>
+            <td>
+                @mail.ID
+            </td>
+            <td>
+                @mail.Code
+            </td>
+            <td>
+                @mail.Description
+            </td>
+            <td>
+                @mail.Value
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

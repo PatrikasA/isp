@@ -1,6 +1,44 @@
-﻿@{
+﻿@model IEnumerable<EmailTemplate>
+@{
     ViewData["Title"] = "Laikšų šablonas";
 }
 <h1>@ViewData["Title"]</h1>
 
 <p>Šioje vietoje bus kontroliuojami laiškų šablonai</p>
+<table class="table table-dark">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Kodas</th>
+            <th scope="col">Aprašymas</th>
+            <th scope="col">Nuo</th>
+            <th scope="col">Pavadinimas</th>
+            <th scope="col">Turinys</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var mail in Model)
+        {
+            <tr>
+                <td>
+                    @mail.ID
+                </td>
+                <td>
+                    @mail.Code
+                </td>
+                <td>
+                    @mail.Description
+                </td>
+                <td>
+                    @mail.From
+                </td>
+                <td>
+                    @mail.Title
+                </td>
+                <td>
+                    @mail.Text
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
