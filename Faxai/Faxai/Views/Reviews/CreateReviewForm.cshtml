@@ -3,4 +3,19 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<a class="nav-link text-dark" asp-area="" asp-controller="Reviews" asp-action="FullReview">Atgal</a>
+<form asp-controller="Products" asp-action="Product" method="post">
+    <div class="form-group">
+        <label for="rating">Įvertinimas (nuo 1 iki 5):</label>
+        <input type="number" class="form-control" id="rating" name="Rating" min="1" max="5" required>
+    </div>
+
+    <div class="form-group">
+        <label for="comment">Komentaras:</label>
+        <textarea class="form-control" id="comment" name="Comment" rows="4"></textarea>
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Patvirtinti</button>
+</form>
+<br />
+<a class="btn btn-dark" asp-area="" asp-controller="Products" asp-action="Product">Atgal</a>
