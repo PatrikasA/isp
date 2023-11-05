@@ -1,0 +1,13 @@
+﻿
+<div>
+    <h2>Naudotojo informacija</h2>
+    <form asp-controller="User" asp-action="BlockUser" method="get">
+        <input type="hidden" name="userId"/>
+        <button type="submit" class="btn btn-warning">Blokuoti vartotoją</button>
+    </form>
+
+    <form asp-controller="User" asp-action="DeleteUser" method="get">
+        <input type="hidden" name="userId"/>
+        <button type="submit" class="btn btn-danger">Pašalinti paskyrą</button>
+    </form>
+</div>
