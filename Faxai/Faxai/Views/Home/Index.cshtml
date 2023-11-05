@@ -1,8 +1,21 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Prisijungti";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Prisijungti</h1>
+    <form asp-action="Login" method="post">
+        <div class="form-group">
+            <label for="email">El. pašto adresas:</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Slaptažodis:</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Prisijungti</button>
+        <a class="btn btn-secondary" asp-action="HomePage">Prisijungti naudojant Google</a>
+    </form>
+    <br>
+    <p>Neturite paskyros? <a class="btn btn-secondary" asp-action="RegisterView">Registruotis</a></p>
 </div>
