@@ -8,5 +8,21 @@ namespace Faxai.Controllers
         {
             return View();
         }
+        public IActionResult CreateProduct()
+        {
+            return View();
+        }
+        public IActionResult EditProduct()
+        {
+            return View();
+        }
+        public IActionResult DeleteProduct()
+        {
+            return View();
+        }
+        public IActionResult FullPoductReview()
+        {
+            return View();
+        }
     }
 }
