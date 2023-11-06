@@ -20,6 +20,10 @@ namespace Faxai.Controllers
         {
             return View();
         }
+        public IActionResult FilterProducts()
+        {
+            return View();
+        }
         public IActionResult FullPoductReview()
         {
             return View();
