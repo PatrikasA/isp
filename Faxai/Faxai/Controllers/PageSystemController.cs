@@ -1,6 +1,8 @@
-﻿using Faxai.Models;
+﻿using Faxai.Helper;
+using Faxai.Models;
 using Faxai.Models.PageSystemModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.Diagnostics;
 
 namespace Faxai.Controllers
@@ -33,6 +35,14 @@ namespace Faxai.Controllers
         }
         private object GetObject(DataType type)
         {
+            DataView dw = DataSource.SelectData("testas", new[] { "@One", "1" });
+
+            DataView dw2 = DataSource.ExecureSelectSQL("SELECT * FROM Kategorija");
+
+            bool IsValid = DataSource.UpdateData("UpdateTestas", new[] { "@testas", "WowwssProcedure" });
+
+            bool isValid2 = DataSource.UpdateDataSQL("UPDATE Kategorija SET Pavadinimas = 'Wows'");
+
             // Simulate data retrieval from a database
             switch (type)
             {
