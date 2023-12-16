@@ -37,7 +37,7 @@ namespace Faxai.Controllers
         {
             DataView dw = DataSource.SelectData("testas", new[] { "@One", "1" });
 
-            DataView dw2 = DataSource.ExecureSelectSQL("SELECT * FROM Kategorija");
+            DataView dw2 = DataSource.ExecuteSelectSQL("SELECT * FROM Kategorija");
 
             bool IsValid = DataSource.UpdateData("UpdateTestas", new[] { "@testas", "WowwssProcedure" });
 

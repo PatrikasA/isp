@@ -86,7 +86,7 @@ namespace Faxai.Helper
         /// </summary>
         /// <param name="CommandText">SQL kodo tekstas</param>
         /// <returns>Užpildyta duomenų lentelė</returns>
-        public static DataView ExecureSelectSQL(string CommandText)
+        public static DataView ExecuteSelectSQL(string CommandText)
         {
             string connectionString = Constants.ConnectionString;
 
