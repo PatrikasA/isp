@@ -35,22 +35,19 @@ namespace Faxai.Controllers
         }
         private object GetObject(DataType type)
         {
-            DataView dw = DataSource.SelectData("testas", new[] { "@One", "1" });
+            //DataView dw = DataSource.SelectData("testas", new[] { "@One", "1" });
 
-            DataView dw2 = DataSource.ExecuteSelectSQL("SELECT * FROM Kategorija");
+            //DataView dw2 = DataSource.ExecuteSelectSQL("SELECT * FROM Kategorija");
 
-            bool IsValid = DataSource.UpdateData("UpdateTestas", new[] { "@testas", "WowwssProcedure" });
+            //bool IsValid = DataSource.UpdateData("UpdateTestas", new[] { "@testas", "WowwssProcedure" });
 
-            bool isValid2 = DataSource.UpdateDataSQL("UPDATE Kategorija SET Pavadinimas = 'Wows'");
+            //bool isValid2 = DataSource.UpdateDataSQL("UPDATE Kategorija SET Pavadinimas = 'Wows'");
 
             // Simulate data retrieval from a database
             switch (type)
             {
                 case DataType.PageConfig:
-                    return new List<PageConfig>{
-                        new PageConfig { ID = 1,Code="PrimaryColor",Value="1",Description="tai pavyzdinis kodas" },
-                        new PageConfig { ID = 2,Code="MaxFailedLogins",Value="5",Description="tai pavyzdinis kodas" },
-                        new PageConfig { ID = 3,Code="ConnectionStrg",Value="1",Description="tai pavyzdinis kodas" }};
+                    return ReturnPageConfigs();
                 case DataType.EmailTemplate:
                     return new List<EmailTemplate> {
                         new EmailTemplate{ ID = 1, Code = "Main", Description ="testas", From ="testas@testas.com", Title="Laiskas", Text="su pagarba, testas" },
@@ -67,11 +64,52 @@ namespace Faxai.Controllers
             }
             return null;
         }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        protected List<PageConfig> ReturnPageConfigs()
+        {
+            DataView dw = DataSource.SelectData("Puslaptio_Nustatymai_SelectAll", new string[] { });
+            List<PageConfig> configList = new List<PageConfig>();
+            foreach (DataRow row in dw.Table.Rows)
+            {
+                PageConfig config = new PageConfig();
+                config.ID = Convert.ToInt32(row["ID"]);
+                config.Code = row["Kodas"].ToString();
+                config.Value = row["Reiksme"].ToString();
+                config.Description = row["Aprasymas"].ToString();
+                configList.Add(config);
+            }
+            return configList;
+        }
+        public IActionResult SaveObject(PageConfig config)
+        {
+            if (config.SaveToDataBase())
+            {
+                //Teigiamas pranešimas
+            }
+            else
+            {
+                //Neigiamas
+            }
+            return RedirectToAction("PageConfig");
+        }
+
+        [HttpPost]
+        public IActionResult DeleteConfig(int id)
+        {
+            PageConfig conf = new PageConfig();conf.ID = id;
+            if (conf.DeleteFromDataBase())
+            {
+
+            }
+            else
+            {
+
+            }
+            return RedirectToAction("PageConfig");
         }
     }
 }

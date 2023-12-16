@@ -1,0 +1,29 @@
+﻿@model PageConfig
+<style>
+    .FormContainerStyle {
+        width: 360px;
+        border-radius: 8px; /* Adjust the border-radius as needed */
+        border: 1px solid #ccc; /* Color for the border */
+        box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1); /* Shadow on the right side */
+        padding: 20px; /* Padding for the content inside */
+    }
+</style>
+
+<div class="FormContainerStyle">
+    <form asp-action="SaveObject" asp-controller="PageSystem" method="post">
+        <div class="form-group">
+            <label for="Code">Kodas:</label>
+            <input type="text" class="form-control" id="Code" name="Code" required>
+        </div>
+        <div class="form-group">
+            <label for="Description">Aprašymas:</label>
+            <input type="text" class="form-control" id="Description" name="Description" required>
+        </div>
+        <div class="form-group">
+            <label for="Value">Reikšmė:</label>
+            <input type="text" class="form-control" id="Value" name="Value" required>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">Įrašyti</button>
+    </form>
+</div>

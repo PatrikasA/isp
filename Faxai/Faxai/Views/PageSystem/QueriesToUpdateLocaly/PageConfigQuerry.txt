@@ -1,0 +1,22 @@
+CREATE PROCEDURE Puslapio_Nustatymai_Insert
+(@Kodas NVARCHAR(50),@Reiksme nvarchar(200),@Aprasymas nvarchar(500))
+AS
+BEGIN
+	INSERT INTO Puslapio_Nustatymai
+	VALUES(@Kodas,@Reiksme,@Aprasymas)
+END
+GO
+CREATE PROCEDURE Puslapio_Nustatymai_Delete
+(@ID INT)
+AS
+BEGIN
+	DELETE FROM Puslapio_Nustatymai
+	WHERE ID = @ID
+END
+GO
+CREATE PROCEDURE [dbo].[Puslaptio_Nustatymai_SelectAll]
+AS
+BEGIN
+	SELECT * FROM Puslapio_Nustatymai
+END
+GO

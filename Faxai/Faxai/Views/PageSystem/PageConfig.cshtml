@@ -2,9 +2,14 @@
 @{
     ViewData["Title"] = "Puslapio nustatymai";
 }
+
 <h1>@ViewData["Title"]</h1>
 
 <p>Puslapio nustatymų įvedimas ir redagavimas, kartu su manipuliacijos forma</p>
+<div>
+    @Html.Partial("PageConfigInsertForm", new PageConfig())
+</div>
+<br />
 <table class="table table-dark">
     <thead class="thead-dark">
         <tr>
@@ -12,23 +17,30 @@
             <th scope="col">Kodas</th>
             <th scope="col">Aprašymas</th>
             <th scope="col">Reikšmė</th>
+            <th scope="col">Valdymas</th>
         </tr>
     </thead>
     <tbody>
-    @foreach (var mail in Model)
+    @foreach (var config in Model)
     {
         <tr>
             <td>
-                @mail.ID
+                    @config.ID
             </td>
             <td>
-                @mail.Code
+                    @config.Code
             </td>
             <td>
-                @mail.Description
+                    @config.Description
             </td>
             <td>
-                @mail.Value
+                    @config.Value
+            </td>
+            <td>
+                <form asp-controller="PageSystem" asp-action="DeleteConfig" method="post">
+                    <input type="hidden" name="id" value="@config.ID" />
+                    <button type="submit" class="btn btn-danger">Ištrinti</button>
+                </form>
             </td>
         </tr>
     }

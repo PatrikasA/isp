@@ -9,5 +9,15 @@
         /// Password = Naudotojo slaptažodis
         /// </summary>
         public static string ConnectionString = "Server=(localdb)\\MSSQLLocalDB;Database=Faxai;User=Faxas;Password=Faxas123;";
+
+
+        /// <summary>
+        /// Duomenu bazės pagrindinių veiksmų plėtiniai. Juos naudoti nebūtina, bet palengvina ir pagražina kodavimą.
+        /// </summary>
+        public static string SQLInset = "_Insert";
+        public static string SQLUpdate = "_Update";
+        public static string SQLSelect = "_Select";
+        public static string SQLSelectAll = "_SelectAll";
+        public static string SQLDelete = "_Delete";
     }
 }
