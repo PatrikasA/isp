@@ -1,8 +1,90 @@
-﻿@{
+﻿@using Faxai.Models.ShoppingCartModels
+
+@model IEnumerable<ProductModel>
+@{
     ViewData["Title"] = "Krepšelis";
 }
-<h1>@ViewData["Title"]</h1>
+<center><h1>@ViewData["Title"]</h1></center>
 
-<p>Čia bus atvaizduotas krepšelis.</p>
+<a class="btn btn-warning" asp-area="" asp-controller="Home" asp-action="HomePage">Atgal</a>
+<input type="text" id="productName" placeholder="Iveskite pavadinima"></input><button onclick="addToCart()">Prideti i krepseli</button>
+<table class="table table-dark">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Pavadinimas</th>
+            <th scope="col">Aprašymas</th>
+            <th scope="col">Kaina</th>
+            <th scope="col">Vertinimo vidurkis</th>
+            <th scope="col">Veiksmas</th>
+        </tr>
+    </thead>
+    <tbody id="productDetails">
 
-<a class="btn btn-dark" asp-area="" asp-controller="Home" asp-action="HomePage">Atgal</a>
+    </tbody>
+</table>
+<p>Bendras prekių kiekis: <span class="Count">0</span></p>
+<p>Bendra suma: <span class="Sum">0</span></p>
+<button class="btn btn-dark">Issaugoti krepšelį</button>
+<script>
+    let count = document.querySelector('.Count');
+    let sum = document.querySelector('.Sum');
+    let totalPrice = 0;
+    let totalCount = 0;
+    async function addToCart() {
+        var productName = document.getElementById('productName').value;
+
+        const response = await fetch(`/ShoppingCart/GetProductDetails?productName=${productName}`);
+
+        if (response.ok) {
+            const productDetails = await response.text();
+
+            // Create a new table row
+            var newRow = document.createElement('tr');
+            newRow.innerHTML = productDetails;
+
+            // Append the new row to the table body
+            var tableBody = document.getElementById('productDetails');
+            tableBody.appendChild(newRow);
+           
+            var cells = newRow.querySelectorAll('td');
+            if (cells.length >= 3) {
+                var price = cells[2].innerText;
+            } else {
+                console.error('Price value is wrong.');
+            }
+            totalPrice = totalPrice + parseFloat(price);
+            totalCount++;
+            count.innerHTML = totalCount;
+            sum.innerHTML = totalPrice.toFixed(2);
+
+        } else {
+            console.error('Failed to fetch product details.');
+        }
+    }
+    document.getElementById('productDetails').addEventListener('click', function (event) {
+        if (event.target.classList.contains('btn-danger')) {
+            // Target the delete button
+            var deleteBtn = event.target;
+
+            // Get the row to be deleted
+            var rowToDelete = deleteBtn.closest('tr');
+
+            // Extract price from the row
+            var cells = rowToDelete.querySelectorAll('td');
+            if (cells.length >= 3) {
+                var price = cells[2].innerText;
+            } else {
+                console.error('Price value is wrong.');
+            }
+
+            // Remove the row from the table
+            rowToDelete.remove();
+
+            // Update total price and count
+            totalPrice -= price;
+            totalCount--;
+            count.innerHTML = totalCount;
+            sum.innerHTML = totalPrice.toFixed(2);
+        }
+    });
+</script>
