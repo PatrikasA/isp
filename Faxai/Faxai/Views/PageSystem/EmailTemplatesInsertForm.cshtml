@@ -1,4 +1,5 @@
-﻿@model EmailTemplate
+﻿@using System.Web;
+@model EmailTemplate
 <style>
     .FormContainerStyle {
         width: 760px;
@@ -20,17 +21,18 @@
 
 <div class="FormContainerStyle">
     <form asp-action="SaveEmailTemplate" asp-controller="PageSystem" method="post">
+        <input type="hidden" class="form-control" id="ID" name="ID" required value="@Model.ID">
         <div class="form-group" style="width:250px">
             <label for="Code">Kodas:</label>
-            <input type="text" class="form-control" id="Code" name="Code" required value="@Model.ID">
+            <input type="text" class="form-control" id="Code" name="Code" required value="@Model.Code">
         </div>
         <div class="form-group">
             <label for="Description">Aprašymas:</label>
             <textarea type="text" class="form-control" id="Description" name="Description" required>@Model.Description</textarea>
         </div>
         <div class="form-group">
-            <label for="Nuo">Nuo:</label>
-            <input type="email" class="form-control" id="Nuo" name="Nuo" required value="@Model.From">
+            <label for="From">Nuo:</label>
+            <input type="email" class="form-control" id="From" name="From" required value="@Model.From">
         </div>
         <div class="form-group">
             <label for="Title">Antratšė:</label>
@@ -38,7 +40,7 @@
         </div>
         <div class="form-group">
             <label for="Text">Turinys:</label>
-            <EmailEditor type="text" class="form-control" id="Text" name="Text" required>@Model.Text</EmailEditor>
+            <EmailEditor type="text" class="form-control" id="Text" name="Text" required>@Html.Raw(Model.Text)</EmailEditor>
         </div>
         <br />
         <button type="submit" class="btn btn-primary">Įrašyti</button>

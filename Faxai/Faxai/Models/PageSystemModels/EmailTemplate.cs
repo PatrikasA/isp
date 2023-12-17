@@ -21,16 +21,16 @@ public class EmailTemplate
 
     public bool SaveToDataBase()
     {
-        return DataSource.UpdateData(DataBaseName + Constants.SQLInset,
+        return DataSource.UpdateData(DataBaseName + "_Manager",
             new[]
             {
-                "@Kodas",Code,
-                "@Antraste", Title,
-                "@Aprasymas", Description,
-                "@Turinys", Text,
-                "@Nuo",From
-            }
-            );
+                    "ID",ID.ToString(),
+                    "@Kodas",Code,
+                    "@Antraste", Title,
+                    "@Aprasymas", Description,
+                    "@Turinys", Text,
+                    "@Nuo",From
+            });
     }
     public bool DeleteFromDataBase()
     {

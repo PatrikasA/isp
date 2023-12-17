@@ -1,18 +1,114 @@
-CREATE PROCEDURE Puslapio_Nustatymai_Insert
-(@Kodas NVARCHAR(50),@Reiksme nvarchar(200),@Aprasymas nvarchar(500))
+USE [Faxai]
+GO
+/****** Object:  StoredProcedure [dbo].[Laisko_Sablonas_Delete]    Script Date: 2023-12-17 14:47:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Laisko_Sablonas_Delete]
+(
+@ID INT
+)
 AS
 BEGIN
-	INSERT INTO Puslapio_Nustatymai
-	VALUES(@Kodas,@Reiksme,@Aprasymas)
+DELETE FROM Laisko_Sablonas
+WHERE ID = @ID
 END
 GO
-CREATE PROCEDURE Puslapio_Nustatymai_Delete
+/****** Object:  StoredProcedure [dbo].[Laisko_Sablonas_Insert]    Script Date: 2023-12-17 14:47:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Laisko_Sablonas_Insert]
+(
+@Aprasymas nvarchar(500),
+@Kodas nvarchar(50), 
+@Antraste nvarchar(50),
+@Turinys nvarchar(max),
+@Nuo nvarchar(50)
+)
+AS
+BEGIN
+
+INSERT INTO Laisko_Sablonas
+VALUES (@Aprasymas,@Kodas,@Antraste,@Turinys,@Nuo)
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Laisko_Sablonas_Manager]    Script Date: 2023-12-17 14:47:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Laisko_Sablonas_Manager]
+(
+@ID INT,
+@Aprasymas nvarchar(500),
+@Kodas nvarchar(50), 
+@Antraste nvarchar(50),
+@Turinys nvarchar(max),
+@Nuo nvarchar(50)
+)
+AS
+BEGIN
+IF(@ID = 0 OR @ID  IS NULL)
+	INSERT INTO Laisko_Sablonas
+	VALUES (@Aprasymas,@Kodas,@Antraste,@Turinys,@Nuo)
+ELSE
+	UPDATE	Laisko_Sablonas
+	SET 
+	Aprasymas = @Aprasymas,
+	Kodas =  @Kodas,
+	Antraste = @Antraste,
+	Turinys = @Turinys,
+	Nuo = @Nuo
+	WHERE ID = @ID
+
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Laisko_Sablonas_SelectAll]    Script Date: 2023-12-17 14:47:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Laisko_Sablonas_SelectAll]
+AS
+BEGIN
+	SELECT * FROM Laisko_Sablonas
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Puslapio_Nustatymai_Delete]    Script Date: 2023-12-17 14:47:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Puslapio_Nustatymai_Delete]
 (@ID INT)
 AS
 BEGIN
 	DELETE FROM Puslapio_Nustatymai
 	WHERE ID = @ID
 END
+GO
+/****** Object:  StoredProcedure [dbo].[Puslapio_Nustatymai_Insert]    Script Date: 2023-12-17 14:47:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Puslapio_Nustatymai_Insert]
+(@Kodas NVARCHAR(50),@Reiksme nvarchar(200),@Aprasymas nvarchar(500))
+AS
+BEGIN
+	INSERT INTO Puslapio_Nustatymai
+	VALUES(@Kodas,@Reiksme,@Aprasymas)
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[Puslaptio_Nustatymai_SelectAll]    Script Date: 2023-12-17 14:47:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROCEDURE [dbo].[Puslaptio_Nustatymai_SelectAll]
 AS

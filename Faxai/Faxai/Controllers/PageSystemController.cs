@@ -29,9 +29,11 @@ namespace Faxai.Controllers
         {
             return View(GetObject(DataType.PageLog));
         }
-        public IActionResult EmailTemplates()
+        public IActionResult EmailTemplates(EmailTemplate template = null)
         {
-            if(ViewData["ActiveEmailTemplate"] == null)
+            if (template != null)
+                ViewData["ActiveEmailTemplate"] = template;
+            else
                 ViewData["ActiveEmailTemplate"] = new EmailTemplate() { ID = 0, Code = "testas", Text = "testas", Description = "testas", From = "te", Title = "tess" };
 
             return View(GetObject(DataType.EmailTemplate));
@@ -158,10 +160,10 @@ namespace Faxai.Controllers
         }
 
 
-        public IActionResult UpdateEmail(object test)
+        public IActionResult UpdateEmail(EmailTemplate template)
         {
-            ViewData["ActiveEmailTemplate"] = new EmailTemplate() { ID = 1, Code = "testasjameeee", Text = "tesdasdasdasatas", Description = "tesaszadasdasdtas", From = "tasasse", Title = "tess" };
-            return RedirectToAction("EmailTemplates");
+            ViewData["ActiveEmailTemplate"] = template;
+            return RedirectToAction("EmailTemplates", ViewData["ActiveEmailTemplate"]);
         }
     }
 }

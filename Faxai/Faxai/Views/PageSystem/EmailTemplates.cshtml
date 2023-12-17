@@ -78,6 +78,11 @@
                             <td>
                                 <form asp-controller="PageSystem" asp-action="UpdateEmail" method="post">
                                     <input type="hidden" name="id" value="@mail.ID" />
+                                    <input type="hidden" name="Code" value="@mail.Code" />
+                                    <input type="hidden" name="Title" value="@mail.Title" />
+                                    <input type="hidden" name="Description" value="@mail.Description" />
+                                    <input type="hidden" name="From" value="@mail.From" />
+                                    <input type="hidden" name="Text" value="@mail.Text" />
                                     <button type="submit" class="btn btn-warning">Redaguoti</button>
                                 </form>
                             </td>
