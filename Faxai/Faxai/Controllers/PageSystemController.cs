@@ -29,8 +29,13 @@ namespace Faxai.Controllers
         {
             return View(GetObject(DataType.PageLog));
         }
-        public IActionResult EmailTemplates()
+        public IActionResult EmailTemplates(EmailTemplate template = null)
         {
+            if (template != null)
+                ViewData["ActiveEmailTemplate"] = template;
+            else
+                ViewData["ActiveEmailTemplate"] = new EmailTemplate() { ID = 0, Code = "testas", Text = "testas", Description = "testas", From = "te", Title = "tess" };
+
             return View(GetObject(DataType.EmailTemplate));
         }
         private object GetObject(DataType type)
@@ -49,11 +54,7 @@ namespace Faxai.Controllers
                 case DataType.PageConfig:
                     return ReturnPageConfigs();
                 case DataType.EmailTemplate:
-                    return new List<EmailTemplate> {
-                        new EmailTemplate{ ID = 1, Code = "Main", Description ="testas", From ="testas@testas.com", Title="Laiskas", Text="su pagarba, testas" },
-                        new EmailTemplate{ ID = 2, Code = "Alert", Description ="testas", From ="testas@testas.com", Title="Pranesimas", Text="su pagarba, testas" },
-                        new EmailTemplate{ ID = 3, Code = "AlerWithLogin", Description ="testas", From ="testas@testas.com", Title="Ispejimas", Text="su pagarba, testas" }
-                    };
+                    return ReturnEmailTemplates();
                 case DataType.PageLog:
                     return new List<PageLog> { 
                         new PageLog { PageLogID = 1, Date=DateTime.Today, Description = "testas", Url="http://localhost", Category = "testas", UserID = 1, } ,
@@ -84,7 +85,26 @@ namespace Faxai.Controllers
             }
             return configList;
         }
-        public IActionResult SaveObject(PageConfig config)
+        protected List<EmailTemplate> ReturnEmailTemplates()
+        {
+            DataView dw = DataSource.SelectData("Laisko_Sablonas_SelectAll", new string[] { });
+            List<EmailTemplate> EmailList = new List<EmailTemplate>();
+            foreach (DataRow row in dw.Table.Rows)
+            {
+                EmailTemplate config = new EmailTemplate();
+                config.ID = Convert.ToInt32(row["ID"]);
+                config.Description = row["Aprasymas"].ToString();
+                config.Code = row["Kodas"].ToString();
+                config.Title = row["Antraste"].ToString();
+                config.Text = row["Turinys"].ToString();
+                config.From = row["Nuo"].ToString();
+                EmailList.Add(config);
+            }
+            return EmailList;
+        }
+
+
+        public IActionResult SavePageConfig(PageConfig config)
         {
             if (config.SaveToDataBase())
             {
@@ -95,6 +115,18 @@ namespace Faxai.Controllers
                 //Neigiamas
             }
             return RedirectToAction("PageConfig");
+        }
+        public IActionResult SaveEmailTemplate(EmailTemplate template)
+        {
+            if (template.SaveToDataBase())
+            {
+                //Teigiamas pranešimas
+            }
+            else
+            {
+                //Neigiamas
+            }
+            return RedirectToAction("EmailTemplates");
         }
 
         [HttpPost]
@@ -110,6 +142,28 @@ namespace Faxai.Controllers
 
             }
             return RedirectToAction("PageConfig");
+        }
+
+        [HttpPost]
+        public IActionResult DeleteEmail(int id)
+        {
+            EmailTemplate emailTemplate = new EmailTemplate(); emailTemplate.ID = id;
+            if (emailTemplate.DeleteFromDataBase())
+            {
+
+            }
+            else
+            {
+
+            }
+            return RedirectToAction("EmailTemplates");
+        }
+
+
+        public IActionResult UpdateEmail(EmailTemplate template)
+        {
+            ViewData["ActiveEmailTemplate"] = template;
+            return RedirectToAction("EmailTemplates", ViewData["ActiveEmailTemplate"]);
         }
     }
 }

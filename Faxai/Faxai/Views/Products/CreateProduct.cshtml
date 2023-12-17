@@ -1,8 +1,56 @@
-﻿@{
-    ViewData["Title"] = "Prekė";
+﻿<!-- Views/Product/Create.cshtml -->
+@model Faxai.Models.ProductModels.ProductCreateModel
+
+@{
+    ViewBag.Title = "Prekės kūrimas";
 }
-<h1>@ViewData["Title"]</h1>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
-<p>Čia bus atvaizduotas prekės kūrimo langas</p>
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-<a class="btn btn-dark" asp-area="" asp-controller="Home" asp-action="HomePage">Atgal</a>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Pavadinimas, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Pavadinimas, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Pavadinimas, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Kaina, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Kaina, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Kaina, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Kiekis_Sandelyje, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Kiekis_Sandelyje, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Kiekis_Sandelyje, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Aprasymas, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Aprasymas, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Aprasymas, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <!-- Pridėkite likusius laukus pagal poreikį -->
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
