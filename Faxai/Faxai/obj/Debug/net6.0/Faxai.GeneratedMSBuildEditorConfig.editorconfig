@@ -9,49 +9,121 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Faxai
 build_property.RootNamespace = Faxai
-build_property.ProjectDir = C:\Users\vidma\Documents\Faxai\Faxai\Faxai\
+build_property.ProjectDir = C:\Users\Armalis\Documents\GitHub\isp\Faxai\Faxai\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\vidma\Documents\Faxai\Faxai\Faxai
+build_property.MSBuildProjectDirectory = C:\Users\Armalis\Documents\GitHub\isp\Faxai\Faxai
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/vidma/Documents/Faxai/Faxai/Faxai/Views/Home/Index.cshtml]
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/Home/HomePage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxIb21lUGFnZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vidma/Documents/Faxai/Faxai/Faxai/Views/Home/Privacy.cshtml]
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vidma/Documents/Faxai/Faxai/Faxai/Views/PageSystem/EmailTemplates.cshtml]
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/Home/RegisterView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxSZWdpc3RlclZpZXcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/PageSystem/EmailTemplates.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFnZVN5c3RlbVxFbWFpbFRlbXBsYXRlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vidma/Documents/Faxai/Faxai/Faxai/Views/PageSystem/PageAnalitics.cshtml]
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/PageSystem/PageAnalitics.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFnZVN5c3RlbVxQYWdlQW5hbGl0aWNzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vidma/Documents/Faxai/Faxai/Faxai/Views/PageSystem/PageConfig.cshtml]
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/PageSystem/PageConfig.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFnZVN5c3RlbVxQYWdlQ29uZmlnLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vidma/Documents/Faxai/Faxai/Faxai/Views/Shared/Error.cshtml]
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/PageSystem/PageConfigInsertForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFnZVN5c3RlbVxQYWdlQ29uZmlnSW5zZXJ0Rm9ybS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/Products/CreateProduct.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcQ3JlYXRlUHJvZHVjdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/Products/DeleteProduct.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcRGVsZXRlUHJvZHVjdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/Products/EditProduct.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcRWRpdFByb2R1Y3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/Products/Product.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcUHJvZHVjdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/Reviews/CreateReviewForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmV2aWV3c1xDcmVhdGVSZXZpZXdGb3JtLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/Reviews/DeleteReviewForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmV2aWV3c1xEZWxldGVSZXZpZXdGb3JtLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/Reviews/EditReviewForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmV2aWV3c1xFZGl0UmV2aWV3Rm9ybS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/Reviews/FullReview.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmV2aWV3c1xGdWxsUmV2aWV3LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vidma/Documents/Faxai/Faxai/Faxai/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vidma/Documents/Faxai/Faxai/Faxai/Views/_ViewImports.cshtml]
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/ShoppingCart/ShoppingCart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcHBpbmdDYXJ0XFNob3BwaW5nQ2FydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/User/BlockUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxCbG9ja1VzZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/User/DeleteUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxEZWxldGVVc2VyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/User/DeliveryForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxEZWxpdmVyeUZvcm0uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/User/DeliveryInfo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxEZWxpdmVyeUluZm8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/User/Orders.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxPcmRlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/User/UserInfo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxVc2VySW5mby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vidma/Documents/Faxai/Faxai/Faxai/Views/_ViewStart.cshtml]
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/vidma/Documents/Faxai/Faxai/Faxai/Views/Shared/_Layout.cshtml]
+[C:/Users/Armalis/Documents/GitHub/isp/Faxai/Faxai/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-rr0oh86kla
