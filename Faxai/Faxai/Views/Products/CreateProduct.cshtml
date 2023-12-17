@@ -44,6 +44,19 @@
             </div>
         </div>
 
+        <div class="form-group">
+            @Html.LabelFor(model => model.Kategorija, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Kategorija, new List<SelectListItem>
+            {
+            new SelectListItem { Text = "Auto", Value = "Auto" },
+            new SelectListItem { Text = "Maistas", Value = "Maistas" },
+            new SelectListItem { Text = "Kita", Value = "Kita" },
+            }, "-- Pasirinkite kategoriją --", new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(model => model.Kategorija, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         <!-- Pridėkite likusius laukus pagal poreikį -->
 
