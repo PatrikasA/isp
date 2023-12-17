@@ -20,6 +20,8 @@ namespace Faxai.Models.ProductModels
 
         [Display(Name = "Zemiausia Kaina Per 10d")]
         public decimal Zemiausia_Kaina_Per_10d { get; set; }
+
+        public string Kategorija { get; set; }
     }
 
 }

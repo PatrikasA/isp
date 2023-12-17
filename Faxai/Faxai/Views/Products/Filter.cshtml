@@ -1,0 +1,26 @@
+﻿@model List<Faxai.Models.ProductModels.ProductViewModel> 
+
+@{
+    ViewBag.Title = "Prekės pagal kategoriją";
+}
+
+<h2>Prekės pagal kategoriją</h2>
+
+<table class="table">
+    <tr>
+        <th>Pavadinimas</th>
+        <th>Kaina</th>
+        <th>Kiekis sandėlyje</th>
+        <th>Kategorija</th
+    </tr>
+    @foreach (var preke in Model)
+    {
+        <tr>
+            <td>@preke.Pavadinimas</td>
+            <td>@preke.Kaina</td>
+            <td>@preke.Kiekis_Sandelyje</td>
+            <td>@preke.Kategorija</td>
+
+        </tr>
+    }
+</table>
