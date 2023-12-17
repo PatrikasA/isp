@@ -20,6 +20,14 @@ namespace Faxai.Controllers
         {
             _logger = logger;
         }
+        public void UserBlocking()
+        {
+            string userId = HttpContext.Request.Query["UserID"];
+            if (!string.IsNullOrEmpty(userId))
+            {
+                LoginHelper.BlockUserByID(userId);
+            }
+        }
 
         public IActionResult PageConfig()
         {
@@ -31,11 +39,6 @@ namespace Faxai.Controllers
         }
         public IActionResult EmailTemplates(EmailTemplate template = null)
         {
-            if (template != null)
-                ViewData["ActiveEmailTemplate"] = template;
-            else
-                ViewData["ActiveEmailTemplate"] = new EmailTemplate() { ID = 0, Code = "testas", Text = "testas", Description = "testas", From = "te", Title = "tess" };
-
             return View(GetObject(DataType.EmailTemplate));
         }
         private object GetObject(DataType type)
