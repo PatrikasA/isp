@@ -39,6 +39,10 @@ namespace Faxai.Controllers
         }
         public IActionResult EmailTemplates(EmailTemplate template = null)
         {
+            if (template != null)
+                ViewData["ActiveEmailTemplate"] = template;
+            else
+                ViewData["ActiveEmailTemplate"] = new EmailTemplate();
             return View(GetObject(DataType.EmailTemplate));
         }
         private object GetObject(DataType type)
@@ -131,26 +135,12 @@ namespace Faxai.Controllers
 
         public IActionResult SavePageConfig(PageConfig config)
         {
-            if (config.SaveToDataBase())
-            {
-                //Teigiamas pranešimas
-            }
-            else
-            {
-                //Neigiamas
-            }
+            DisplayMessege(config.SaveToDataBase());
             return RedirectToAction("PageConfig");
         }
         public IActionResult SaveEmailTemplate(EmailTemplate template)
         {
-            if (template.SaveToDataBase())
-            {
-                //Teigiamas pranešimas
-            }
-            else
-            {
-                //Neigiamas
-            }
+            DisplayMessege(template.SaveToDataBase());
             return RedirectToAction("EmailTemplates");
         }
 
@@ -158,14 +148,7 @@ namespace Faxai.Controllers
         public IActionResult DeleteConfig(int id)
         {
             PageConfig conf = new PageConfig();conf.ID = id;
-            if (conf.DeleteFromDataBase())
-            {
-
-            }
-            else
-            {
-
-            }
+            DisplayMessege(conf.DeleteFromDataBase());
             return RedirectToAction("PageConfig");
         }
 
@@ -173,14 +156,7 @@ namespace Faxai.Controllers
         public IActionResult DeleteEmail(int id)
         {
             EmailTemplate emailTemplate = new EmailTemplate(); emailTemplate.ID = id;
-            if (emailTemplate.DeleteFromDataBase())
-            {
-
-            }
-            else
-            {
-
-            }
+            DisplayMessege(emailTemplate.DeleteFromDataBase());
             return RedirectToAction("EmailTemplates");
         }
 
@@ -189,6 +165,14 @@ namespace Faxai.Controllers
         {
             ViewData["ActiveEmailTemplate"] = template;
             return RedirectToAction("EmailTemplates", ViewData["ActiveEmailTemplate"]);
+        }
+        private void DisplayMessege(bool IsSuccess)
+        {
+            if(IsSuccess)
+                TempData["SuccessMessage"] = "Duomenys sėkimingai atnaujinti/įterpti!";
+            else
+                TempData["ErrorMessage"] = "Duomenų atnaujinti/įterpti nepavyko. Įvyko sisteminė klaida!";
+            
         }
     }
 }
