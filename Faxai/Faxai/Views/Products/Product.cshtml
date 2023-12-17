@@ -5,31 +5,103 @@
 
 <p>Šioje skiltyje detali informacija apie konkrečią prekę</p>
 
-
 <h1>Prekės atsiliepimai</h1>
 
-<a class="btn btn-primary" asp-area="" asp-controller="Reviews" asp-action="CreateReviewForm">Palikti atsiliepimą</a>
+<a class="btn btn-primary" data-toggle="modal" data-target="#createReviewModal">Palikti atsiliepimą</a>
 
 @for (int i = 0; i < 3; i++)
 {
-    <div class="row, review-item">
+    <div class="row review-item justify-content-between">
         <div class="col-2">
-            <p class="review-text">3.5 žvaigždutės</p>
+            <p class="review-text">3.5 <i class="bi bi-star-fill"></i></p>
         </div>
         <div class="col-4">
             <p class="review-text">Very nice product!</p>
         </div>
         <div class="col-2">
-            <a class="btn btn-primary" asp-area="" asp-controller="Reviews" asp-action="FullReview">...Daugiau</a>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#fullReviewModal">
+                <i class="bi bi-eye"></i> Peržiūrėti
+            </button>
         </div>
         <div class="col-2">
-            <a class="btn btn-primary" asp-area="" asp-controller="Reviews" asp-action="EditReviewForm">Redaguoti</a>
+            <button class="btn btn-warning" data-toggle="modal" data-target="#editReviewModal">
+                <i class="bi bi-pencil"></i> Redaguoti
+            </button>
         </div>
         <div class="col-2">
-            <a class="btn btn-dark" asp-area="" asp-controller="Reviews" asp-action="DeleteReviewForm">Ištrinti</a>
+            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteReviewModal">
+                <i class="bi bi-trash"></i> Ištrinti
+            </button>
         </div>
     </div>
 }
 
 <a class="btn btn-dark" asp-area="" asp-controller="Home" asp-action="HomePage">Atgal</a>
 
+<!-- Create Review Modal -->
+<div class="modal fade" id="createReviewModal" tabindex="-1" role="dialog" aria-labelledby="createReviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createReviewModalLabel">Palikti atsiliepimą</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("../Reviews/CreateReviewForm")
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Full Review Modal -->
+<div class="modal fade" id="fullReviewModal" tabindex="-1" role="dialog" aria-labelledby="fullReviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fullReviewModalLabel">Atsiliepimas</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("../Reviews/FullReview") 
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Review Modal -->
+<div class="modal fade" id="editReviewModal" tabindex="-1" role="dialog" aria-labelledby="editReviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editReviewModalLabel">Redaguoti atsiliepimą</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("../Reviews/EditReviewForm") 
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Review Modal -->
+<div class="modal fade" id="deleteReviewModal" tabindex="-1" role="dialog" aria-labelledby="deleteReviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteReviewModalLabel">Ištrinti atsiliepimą</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("../Reviews/DeleteReviewForm")
+            </div>
+        </div>
+    </div>
+</div>
