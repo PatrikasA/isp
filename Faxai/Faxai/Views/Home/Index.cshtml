@@ -14,7 +14,7 @@
             <input type="password" class="form-control" id="password" name="password" required>
         </div>
         <button type="submit" class="btn btn-primary">Prisijungti</button>
-        <a class="btn btn-secondary" asp-action="HomePage">Prisijungti naudojant Google</a>
+        <a class="btn btn-info" asp-controller="User" asp-action="GoogleLogin">Log in with Google</a>
     </form>
     <br>
     <p>Neturite paskyros? <a class="btn btn-secondary" asp-action="RegisterView">Registruotis</a></p>

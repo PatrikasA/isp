@@ -33,9 +33,9 @@ namespace Faxai.Controllers
                     var userId = HttpContext.Session.GetString("UserID");
 
                     StringBuilder commandTextBuilder = new StringBuilder();
-                    commandTextBuilder.Append("INSERT INTO Preke (Pavadinimas, Kaina, Kiekis_Sandelyje, Aprasymas, Vertinimo_Vidurkis, Zemiausia_Kaina_Per_10d, NaudotojasID) ");
-                    commandTextBuilder.AppendFormat("VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}')",
-                        productModel.Pavadinimas, productModel.Kaina, productModel.Kiekis_Sandelyje, productModel.Aprasymas, 0, productModel.Kaina, userId);
+                    commandTextBuilder.Append("INSERT INTO Preke (Pavadinimas, Kaina, Kiekis_Sandelyje, Aprasymas, Vertinimo_Vidurkis, Zemiausia_Kaina_Per_10d, NaudotojasID, Kategorija) ");
+                    commandTextBuilder.AppendFormat("VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}')",
+                        productModel.Pavadinimas, productModel.Kaina, productModel.Kiekis_Sandelyje, productModel.Aprasymas, 0, productModel.Kaina, userId, productModel.Kategorija);
 
                     string commandText = commandTextBuilder.ToString();
                     bool success = DataSource.UpdateDataSQL(commandText);
@@ -76,6 +76,7 @@ namespace Faxai.Controllers
                     Kaina = Convert.ToDecimal(prekesEilute["Kaina"]),
                     Kiekis_Sandelyje = Convert.ToInt32(prekesEilute["Kiekis_Sandelyje"]),
                     Aprasymas = Convert.ToString(prekesEilute["Aprasymas"]),
+                    Zemiausia_Kaina_Per_10d = Convert.ToDecimal(prekesEilute["Zemiausia_Kaina_Per_10d"])
                 };
 
                 return View(preke);
@@ -100,6 +101,23 @@ namespace Faxai.Controllers
 
                 if (success)
                 {
+                    if (preke.Kaina < preke.Zemiausia_Kaina_Per_10d)
+                    {
+                        StringBuilder commandTextBuilder1 = new StringBuilder();
+                        commandTextBuilder1.AppendFormat("UPDATE Preke SET Zemiausia_Kaina_Per_10d = '{0}' WHERE ID = {1}", preke.Kaina, preke.ID);
+                        string commandText1 = commandTextBuilder1.ToString();
+                        var flag = DataSource.UpdateDataSQL(commandText1);
+                        if (flag)
+                        {
+                            return View("DeleteProduct");
+                        }
+                        else
+                        {
+                            return BadRequest("Nepavyko atnaujinti mažiasuios kainos");
+
+                        }
+
+                    }
                     return View("DeleteProduct");
                 }
                 else
@@ -121,7 +139,7 @@ namespace Faxai.Controllers
 
             if (userId == null)
             {
-                return View("Product");
+                return View("DeleteProduct");
             }
             else
             {
@@ -173,12 +191,10 @@ namespace Faxai.Controllers
         }
         public IActionResult Details(int id)
         {
-            // Gaukite prekės duomenis iš duomenų bazės pagal ID
             ProductViewModel preke = GetProductById(id);
 
             if (preke == null)
             {
-                // Jei prekė nerasta, nukreipkite į Index veiksmą arba parodykite klaidos puslapį
                 return RedirectToAction("Index");
             }
 
@@ -193,7 +209,6 @@ namespace Faxai.Controllers
                 NewReview = reviewModel
             };
 
-            // Grąžinkite peržiūrą su prekės duomenimis
             return View("Product", tupleModel);
         }
         private ProductViewModel GetProductById(int id)
@@ -208,7 +223,8 @@ namespace Faxai.Controllers
                 Kaina = row.Field<decimal>("Kaina"),
                 Kiekis_Sandelyje = row.Field<int>("Kiekis_Sandelyje"),
                 Aprasymas = row.Field<string>("Aprasymas"),
-                Zemiausia_Kaina_Per_10d = row.Field<decimal>("Zemiausia_Kaina_Per_10d")
+                Zemiausia_Kaina_Per_10d = row.Field<decimal>("Zemiausia_Kaina_Per_10d"),
+                Kategorija = row.Field<string>("Kategorija")
             }).ToList();
 
             var preke = prekiuSarasas.FirstOrDefault();
@@ -237,7 +253,25 @@ namespace Faxai.Controllers
             }).ToList();
 
             return reviews;
+        }
 
+        public ActionResult Filter(string kategorija)
+        {
+            string sqlUzklausa = $"SELECT * FROM Preke WHERE Kategorija = {kategorija}";
+            DataView prekiuDuomenys = DataSource.ExecuteSelectSQL(sqlUzklausa);
+
+            var prekiuSarasas = prekiuDuomenys.ToTable().AsEnumerable().Select(row => new ProductViewModel
+            {
+                ID = row.Field<int>("ID"),
+                Pavadinimas = row.Field<string>("Pavadinimas"),
+                Kaina = row.Field<decimal>("Kaina"),
+                Kiekis_Sandelyje = row.Field<int>("Kiekis_Sandelyje"),
+                Aprasymas = row.Field<string>("Aprasymas"),
+                Zemiausia_Kaina_Per_10d = row.Field<decimal>("Zemiausia_Kaina_Per_10d"),
+                Kategorija = row.Field<string>("Kategorija")
+            }).ToList();
+
+            return View("Filter", prekiuSarasas);
         }
     }
 }

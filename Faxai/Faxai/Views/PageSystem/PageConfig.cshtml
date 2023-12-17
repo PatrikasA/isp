@@ -5,7 +5,19 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<p>Puslapio nustatymų įvedimas ir redagavimas, kartu su manipuliacijos forma</p>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
 <div>
     @Html.Partial("PageConfigInsertForm", new PageConfig())
 </div>

@@ -1,7 +1,7 @@
 ﻿@model Faxai.Models.UserModels.DeliveryInfoModel
 
 @{
-    ViewData["Title"] = Model.ID == 0 ? "Add New Delivery Instruction" : "Edit Delivery Instruction";
+    ViewData["Title"] = Model.ID == 0 ? "Pridėti naują adresą" : "Koreguoti adresą";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -14,26 +14,26 @@
 
     <div class="form-group">
         @Html.LabelFor(m => m.Address)
-        @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Enter Address" })
+        @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Įveskite adresą" })
         @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.CommentForCourier)
-        @Html.TextAreaFor(m => m.CommentForCourier, new { @class = "form-control", placeholder = "Comment for Courier" })
+        @Html.TextAreaFor(m => m.CommentForCourier, new { @class = "form-control", placeholder = "Komentaras kurjeriui" })
         @Html.ValidationMessageFor(m => m.CommentForCourier, "", new { @class = "text-danger" })
     </div>
 
     <button type="submit" class="btn btn-primary">
         @if (Model.ID == 0)
         {
-            @:Add Instruction
+            @:Pridėti
         }
         else
         {
-            @:Update Instruction
+            @:Atnaujinti
         }
     </button>
 }
 
-<a href="@Url.Action("DeliveryInfo", "User")" class="btn btn-secondary">Back to List</a>
+<a href="@Url.Action("DeliveryInfo", "User")" class="btn btn-secondary">Atgal į sąrašą</a>

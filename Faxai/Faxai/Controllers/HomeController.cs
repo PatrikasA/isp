@@ -51,8 +51,8 @@ namespace Faxai.Controllers
                 string commandText = $"SELECT * FROM Naudotojas WHERE El_Pastas = '{email}' AND Slaptazodis = '{password}'";
 
                 DataView userData = DataSource.ExecuteSelectSQL(commandText);
-
-                if (userData != null && userData.Table.Rows.Count > 0)
+                bool isBanned = LoginHelper.IsBannedUser(email);
+                if (userData != null && userData.Table.Rows.Count > 0 && !isBanned)
                 {
                     // User is found. Create session and redirect to a secure page
                     var userRow = userData.Table.Rows[0];
@@ -92,6 +92,7 @@ namespace Faxai.Controllers
                 else
                 {
                     // User not found or password is incorrect
+                    if(!isBanned) LoginHelper.SendToUserWarning($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}", email); //
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View("Index");
                 }

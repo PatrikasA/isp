@@ -1,10 +1,13 @@
-﻿
+﻿@model Faxai.Models.UserModels.UserModel
+
 <h2>Ištrinti vartotoją</h2>
 <p>Ar tikrai norite ištrinti vartotoją?</p>
 
 <form asp-controller="User" asp-action="ConfirmDeleteUser" method="post">
-    <input type="hidden" name="userId" />
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" name="userId" value="2" />
     <button type="submit" class="btn btn-warning">Patvirtinti</button>
     <a href="@Url.Action("UserInfo", "User")" class="btn btn-secondary">Atšaukti</a>
-
 </form>
+
