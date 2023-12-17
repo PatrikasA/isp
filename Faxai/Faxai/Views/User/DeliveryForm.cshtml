@@ -1,36 +1,39 @@
-﻿<h2>Delivery Information</h2>
+﻿@model Faxai.Models.UserModels.DeliveryInfoModel
 
-<form asp-controller="User" asp-action="SubmitDeliveryInfo" method="post">
+@{
+    ViewData["Title"] = Model.ID == 0 ? "Add New Delivery Instruction" : "Edit Delivery Instruction";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@using (Html.BeginForm("SubmitDeliveryInfo", "User", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(m => m.ID)
+
     <div class="form-group">
-        <label for="recipientName">Gavėjo vardas:</label>
-        <input type="text" class="form-control" id="recipientName" name="RecipientName" required>
+        @Html.LabelFor(m => m.Address)
+        @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Enter Address" })
+        @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group">
-        <label for="address">Adresas:</label>
-        <input type="text" class="form-control" id="address" name="Address" required>
+        @Html.LabelFor(m => m.CommentForCourier)
+        @Html.TextAreaFor(m => m.CommentForCourier, new { @class = "form-control", placeholder = "Comment for Courier" })
+        @Html.ValidationMessageFor(m => m.CommentForCourier, "", new { @class = "text-danger" })
     </div>
 
-    <div class="form-group">
-        <label for="city">Miestas:</label>
-        <input type="text" class="form-control" id="city" name="City" required>
-    </div>
+    <button type="submit" class="btn btn-primary">
+        @if (Model.ID == 0)
+        {
+            @:Add Instruction
+        }
+        else
+        {
+            @:Update Instruction
+        }
+    </button>
+}
 
-    <div class="form-group">
-        <label for="postalCode">Pašto kodas:</label>
-        <input type="text" class="form-control" id="postalCode" name="PostalCode" required>
-    </div>
-
-
-    <div class="form-group">
-        <label for="phoneNumber">Tel. nr.:</label>
-        <input type="tel" class="form-control" id="phoneNumber" name="PhoneNumber" required>
-    </div>
-
-    <div class="form-group">
-        <label for="email">El. Pašto adresas:</label>
-        <input type="email" class="form-control" id="email" name="Email" required>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Patvirtinti</button>
-</form>
+<a href="@Url.Action("DeliveryInfo", "User")" class="btn btn-secondary">Back to List</a>

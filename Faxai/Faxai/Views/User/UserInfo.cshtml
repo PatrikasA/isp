@@ -1,5 +1,15 @@
-﻿
+﻿@model Faxai.Models.UserModels.UserModel
+
+@{
+    ViewData["Title"] = "Naudotojo informacija";
+}
+
 <div>
+    <h2>Naudotojo informacija</h2>
+    <p><strong>Vardas:</strong> @Model.Name</p>
+    <p><strong>Pavarde:</strong> @Model.Surname</p>
+    <p><strong>El. Paštas:</strong> @Model.Email</p>
+    <p><strong>Telefonas:</strong> @Model.Phone</p>
     <h2>Naudotojo informacija</h2>
     <form asp-controller="User" asp-action="BlockUser" method="get">
         <input type="hidden" name="userId"/>
