@@ -10,7 +10,7 @@ namespace Faxai.Helper
         /// User = Prisijungimo vardas
         /// Password = Naudotojo slaptažodis
         /// </summary>
-        public static string ConnectionString = "Server=localhost\\SQLEXPRESS01;Database=Faxai;User=Faxas;Password=Faxas123;";
+        public static string ConnectionString = "Server=(localdb)\\MSSQLLocalDB;Database=Faxai;User=Faxas;Password=Faxas123;";
 
 
         /// <summary>
