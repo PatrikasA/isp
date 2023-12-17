@@ -1,4 +1,6 @@
 ﻿using Faxai.Helper;
+using Microsoft.Extensions.Logging.Abstractions;
+using System.Data;
 
 public class EmailTemplate
 {
@@ -40,5 +42,19 @@ public class EmailTemplate
                 "@ID",ID.ToString(),
             }
             );
+    }
+    public void FillDataByCode(string Code)
+    {
+        DataView dw = DataSource.ExecuteSelectSQL($"SELECT * FROM {DataBaseName} WHERE Kodas = '{Code}'");
+
+        if(dw != null && dw.Table.Rows.Count > 0)
+        {
+            this.ID = Convert.ToInt32(dw.Table.Rows[0]["ID"].ToString());
+            this.Code = dw.Table.Rows[0]["Kodas"].ToString();
+            this.Title = dw.Table.Rows[0]["Antraste"].ToString();
+            this.Text = dw.Table.Rows[0]["Turinys"].ToString();
+            this.Description = dw.Table.Rows[0]["Aprasymas"].ToString();
+            this.From = dw.Table.Rows[0]["Nuo"].ToString();
+        }
     }
 }

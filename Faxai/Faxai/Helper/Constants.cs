@@ -1,4 +1,6 @@
-﻿namespace Faxai.Helper
+﻿using System.Net.Mail;
+
+namespace Faxai.Helper
 {
     public class Constants
     {
@@ -19,5 +21,9 @@
         public static string SQLSelect = "_Select";
         public static string SQLSelectAll = "_SelectAll";
         public static string SQLDelete = "_Delete";
+        public static string SMTPServer = "smtp.gmail.com";
+        public static int SMTPPort = 587;
+        public static string SMTPUserEmail= "vidmantaszukitas@gmail.com";
+        public static string SMTPUserPassword = "vmoa brzh iwbg wggz";
     }
 }
