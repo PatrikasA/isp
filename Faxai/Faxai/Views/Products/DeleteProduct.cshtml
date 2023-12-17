@@ -1,8 +1,61 @@
-﻿@{
-    ViewData["Title"] = "Prekė";
-}
-<h1>@ViewData["Title"]</h1>
+﻿@model List<Faxai.Models.ProductModels.ProductViewModel>
 
-<p>Čia bus atvaizduotas prekės šalinimo langas</p>
+<h2>Visos Prekės</h2>
+
+@if (Model == null || Model.Count == 0)
+{
+    <p>Neturite prekių.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Pavadinimas</th>
+                <th>Kaina</th>
+                <th>Kiekis Sandėlyje</th>
+                <th>Žemiausia Kaina Per 10d</th>
+                <th>Veiksmai</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var preke in Model)
+            {
+                <tr>
+                    <td>@preke.ID</td>
+                    <td>@preke.Pavadinimas</td>
+                    <td>@preke.Kaina</td>
+                    <td>@preke.Kiekis_Sandelyje</td>
+                    <td>@preke.Zemiausia_Kaina_Per_10d</td>
+
+                    <td>
+                        <button onclick="editProduct(@preke.ID)">Redaguoti</button>
+                        <button onclick="deleteProduct(@preke.ID)">Ištrinti</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section scripts {
+    <script>
+        // JavaScript funkcija redagavimui
+        function editProduct(productId) {
+            var editUrl = '@Url.Action("EditProduct", "Products")/' + productId;
+            window.location.href = editUrl;
+        }
+
+        function deleteProduct(productId) {
+            var result = confirm('Ar tikrai norite ištrinti šią prekę?');
+
+            if (result) {
+                var deleteUrl = '@Url.Action("DeleteByID", "Products")/' + productId;
+                window.location.href = deleteUrl;
+            }
+        }
+    </script>
+}
 
 <a class="btn btn-dark" asp-area="" asp-controller="Home" asp-action="HomePage">Atgal</a>

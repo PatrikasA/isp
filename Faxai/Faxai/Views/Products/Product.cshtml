@@ -1,4 +1,4 @@
-﻿@{
+﻿@*@{
     ViewData["Title"] = "Prekė";
 }
 <h1>@ViewData["Title"]</h1>
@@ -33,3 +33,33 @@
 
 <a class="btn btn-dark" asp-area="" asp-controller="Home" asp-action="HomePage">Atgal</a>
 
+*@
+@model Faxai.Models.ProductModels.ProductViewModel
+
+<h2>Detali prekės informacija</h2>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>ID:</dt>
+        <dd>@Model.ID</dd>
+
+        <dt>Pavadinimas:</dt>
+        <dd>@Model.Pavadinimas</dd>
+
+        <dt>Kaina:</dt>
+        <dd>@Model.Kaina</dd>
+
+        <dt>Kiekis Sandėlyje:</dt>
+        <dd>@Model.Kiekis_Sandelyje</dd>
+
+        <dt>Aprašymas:</dt>
+        <dd>@Model.Aprasymas</dd>
+
+        <dt>Žemiausia Kaina Per 10d:</dt>
+        <dd>@Model.Zemiausia_Kaina_Per_10d</dd>
+
+        <!-- Papildomi stulpeliai pagal poreikį -->
+    </dl>
+</div>
+
+<a class="btn btn-dark" asp-area="" asp-controller="Home" asp-action="Index">Atgal</a>
