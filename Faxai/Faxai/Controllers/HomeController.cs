@@ -33,7 +33,7 @@ namespace Faxai.Controllers
                 // Remember to use parameterized queries to prevent SQL injection
                 string commandText = $"SELECT * FROM Naudotojas WHERE El_Pastas = '{email}' AND Slaptazodis = '{password}'";
 
-                DataView userData = DataSource.ExecureSelectSQL(commandText);
+                DataView userData = DataSource.ExecuteSelectSQL(commandText);
 
                 if (userData != null && userData.Table.Rows.Count > 0)
                 {
