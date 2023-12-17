@@ -56,12 +56,11 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link text-dark dropdown-toggle" href="#" id="pageSystemDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Veiksmų posistemis
+                                Prekių valdymas
                             </a>
                             <div class="dropdown-menu" aria-labelledby="pageSystemDropdown">
-                                <a class="dropdown-item" asp-area="" asp-controller="PageSystem" asp-action="PageConfig">Puslapio nustatymai</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="PageSystem" asp-action="PageAnalitics">Puslapio statistika</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="PageSystem" asp-action="EmailTemplates">Laiškų šablonai</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="CreateProduct">Pridėti naują prekę</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="DeleteProduct">Redaguoti prekes</a>
                             </div>
                         </li>
                         <li class="nav-item">
@@ -76,8 +75,15 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Orders">Užsakymai</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="CreateProduct">Prekė</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" href="#" id="pageSystemDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Veiksmų posistemis
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="pageSystemDropdown">
+                                <a class="dropdown-item" asp-area="" asp-controller="PageSystem" asp-action="PageConfig">Puslapio nustatymai</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="PageSystem" asp-action="PageAnalitics">Puslapio statistika</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="PageSystem" asp-action="EmailTemplates">Laiškų šablonai</a>
+                            </div>
                         </li>
 
                     </ul>

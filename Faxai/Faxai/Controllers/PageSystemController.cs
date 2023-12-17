@@ -40,15 +40,23 @@ namespace Faxai.Controllers
         }
         private object GetObject(DataType type)
         {
-            //DataView dw = DataSource.SelectData("testas", new[] { "@One", "1" });
+            //Dictionary<string, string> dataToChange = new Dictionary<string, string>();
+            //dataToChange.Add("pavadinimas", "UZS1111");
+            //try
+            //{
+            //    EmailHelper.SendMail("vidmantaszuk@gmail.com", "EmailTemplateCode", dataToChange);
+            //}
+            //catch (Exception e) 
+            //{
+            //    PageLog log = new PageLog();
+            //    log.UserID = int.Parse((string.IsNullOrEmpty(HttpContext.Session.GetString("UserID")) ? "0": HttpContext.Session.GetString("UserID")));
+            //    log.Description = e.Message;
+            //    log.Category = "SystemError";
+            //    log.Url = "PageSystemController.GetObject";
+            //    log.Date = DateTime.Now;
+            //    log.SaveToDataBase();
+            //}
 
-            //DataView dw2 = DataSource.ExecuteSelectSQL("SELECT * FROM Kategorija");
-
-            //bool IsValid = DataSource.UpdateData("UpdateTestas", new[] { "@testas", "WowwssProcedure" });
-
-            //bool isValid2 = DataSource.UpdateDataSQL("UPDATE Kategorija SET Pavadinimas = 'Wows'");
-
-            // Simulate data retrieval from a database
             switch (type)
             {
                 case DataType.PageConfig:
@@ -56,14 +64,10 @@ namespace Faxai.Controllers
                 case DataType.EmailTemplate:
                     return ReturnEmailTemplates();
                 case DataType.PageLog:
-                    return new List<PageLog> { 
-                        new PageLog { PageLogID = 1, Date=DateTime.Today, Description = "testas", Url="http://localhost", Category = "testas", UserID = 1, } ,
-                        new PageLog { PageLogID = 2, Date=DateTime.Today, Description = "testas", Url="http://localhost", Category = "testas", UserID = 1, },
-                        new PageLog { PageLogID = 3, Date=DateTime.Today, Description = "testas", Url="http://localhost", Category = "testas", UserID = 1, }
-                    };
-
+                    return ReturnPageLog();
+                default:
+                    return null;
             }
-            return null;
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -101,6 +105,24 @@ namespace Faxai.Controllers
                 EmailList.Add(config);
             }
             return EmailList;
+        }
+
+        protected List<PageLog> ReturnPageLog()
+        {
+            DataView dw = DataSource.SelectData("Puslapio_Statistika_SelectAll", new string[] { });
+            List<PageLog> logList = new List<PageLog>();
+            foreach (DataRow row in dw.Table.Rows)
+            {
+                PageLog log = new PageLog();
+                log.PageLogID = Convert.ToInt32(row["StatistikaID"].ToString());
+                log.UserID = Convert.ToInt32((string.IsNullOrEmpty(row["NaudotojasID"].ToString())?"0": row["NaudotojasID"].ToString()));
+                log.Description = row["Aprasymas"].ToString();
+                log.Category = row["Kategorija"].ToString();
+                log.Url = row["Nuoroda"].ToString();
+                log.Date = DateTime.Parse(row["Data"].ToString());
+                logList.Add(log);
+            }
+            return logList;
         }
 
 

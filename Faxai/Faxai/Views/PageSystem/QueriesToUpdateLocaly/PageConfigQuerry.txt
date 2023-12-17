@@ -1,6 +1,6 @@
 USE [Faxai]
 GO
-/****** Object:  StoredProcedure [dbo].[Laisko_Sablonas_Delete]    Script Date: 2023-12-17 14:47:05 ******/
+/****** Object:  StoredProcedure [dbo].[Laisko_Sablonas_Delete]    Script Date: 2023-12-17 18:04:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -15,7 +15,7 @@ DELETE FROM Laisko_Sablonas
 WHERE ID = @ID
 END
 GO
-/****** Object:  StoredProcedure [dbo].[Laisko_Sablonas_Insert]    Script Date: 2023-12-17 14:47:05 ******/
+/****** Object:  StoredProcedure [dbo].[Laisko_Sablonas_Insert]    Script Date: 2023-12-17 18:04:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -36,7 +36,7 @@ VALUES (@Aprasymas,@Kodas,@Antraste,@Turinys,@Nuo)
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[Laisko_Sablonas_Manager]    Script Date: 2023-12-17 14:47:05 ******/
+/****** Object:  StoredProcedure [dbo].[Laisko_Sablonas_Manager]    Script Date: 2023-12-17 18:04:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -67,7 +67,7 @@ ELSE
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[Laisko_Sablonas_SelectAll]    Script Date: 2023-12-17 14:47:05 ******/
+/****** Object:  StoredProcedure [dbo].[Laisko_Sablonas_SelectAll]    Script Date: 2023-12-17 18:04:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -78,7 +78,38 @@ BEGIN
 	SELECT * FROM Laisko_Sablonas
 END
 GO
-/****** Object:  StoredProcedure [dbo].[Puslapio_Nustatymai_Delete]    Script Date: 2023-12-17 14:47:05 ******/
+/****** Object:  StoredProcedure [dbo].[Laisku_Istorija_Insert]    Script Date: 2023-12-17 18:04:25 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Laisku_Istorija_Insert]
+(@Turinys nvarchar(max),
+@Nuo nvarchar(50),
+@Issiustas bit,
+@Atsakas nvarchar(500),
+@Siuntimo_Data datetime,
+@NaudotojasID int)
+AS
+BEGIN
+INSERT INTO [dbo].[Laisku_Istorija]
+           ([Turinys]
+           ,[Nuo]
+           ,[Issiustas]
+           ,[Atsakas]
+           ,[Siuntimo_Data]
+           ,[NaudotojasID])
+     VALUES
+           (@Turinys,
+			@Nuo,
+			@Issiustas,
+			@Atsakas,
+			@Siuntimo_Data,
+			@NaudotojasID)
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[Puslapio_Nustatymai_Delete]    Script Date: 2023-12-17 18:04:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -91,7 +122,7 @@ BEGIN
 	WHERE ID = @ID
 END
 GO
-/****** Object:  StoredProcedure [dbo].[Puslapio_Nustatymai_Insert]    Script Date: 2023-12-17 14:47:05 ******/
+/****** Object:  StoredProcedure [dbo].[Puslapio_Nustatymai_Insert]    Script Date: 2023-12-17 18:04:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -105,7 +136,52 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[Puslaptio_Nustatymai_SelectAll]    Script Date: 2023-12-17 14:47:05 ******/
+/****** Object:  StoredProcedure [dbo].[Puslapio_Statistika_Insert]    Script Date: 2023-12-17 18:04:25 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Puslapio_Statistika_Insert]
+(
+@Data DATETIME,
+@Aprasymas nvarchar(500),
+@Nuoroda nvarchar(500),
+@Kategorija nvarchar(500),
+@NaudotojasID int
+)
+AS
+BEGIN
+INSERT INTO [dbo].[Puslapio_Statistika]
+           ([Data]
+           ,[Aprasymas]
+           ,[Nuoroda]
+           ,[Kategorija]
+           ,[NaudotojasID])
+     VALUES
+           (@Data
+           ,@Aprasymas
+           ,@Nuoroda
+           ,@Kategorija
+           ,@NaudotojasID)
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Puslapio_Statistika_SelectAll]    Script Date: 2023-12-17 18:04:25 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Puslapio_Statistika_SelectAll]
+AS
+BEGIN
+	SELECT 
+	Puslapio_Statistika.ID AS StatistikaID,
+	Naudotojas.ID AS NaudotojasID,
+	*
+	FROM Puslapio_Statistika
+	LEFT JOIN Naudotojas ON Naudotojas.ID = Puslapio_Statistika.NaudotojasID
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Puslaptio_Nustatymai_SelectAll]    Script Date: 2023-12-17 18:04:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

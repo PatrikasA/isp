@@ -1,8 +1,18 @@
-﻿
+﻿@model List<Faxai.Models.UserModels.DeliveryInfoModel>
 
-<p>Pavyzdinė info</p>
+@{
+    ViewData["Title"] = "Delivery Information";
+}
 
-<a href="@Url.Action("DeliveryForm", "User")" class="btn btn-secondary">Keisti instrukcijas</a>
+<h2>Delivery Information</h2>
 
+<a href="@Url.Action("DeliveryForm", "User")" class="btn btn-primary">Add New Delivery Instruction</a>
 
-
+@foreach (var instruction in Model)
+{
+    <div class="delivery-instruction">
+        <p><strong>Address:</strong> @instruction.Address</p>
+        <p><strong>Comment for Courier:</strong> @instruction.CommentForCourier</p>
+        <a href="@Url.Action("DeliveryForm", "User", new { id = instruction.ID })" class="btn btn-secondary">Keisti instrukcijas</a>
+    </div>
+}
