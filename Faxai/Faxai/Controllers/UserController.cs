@@ -1,7 +1,11 @@
 ﻿using Faxai.Helper;
 using Faxai.Models.UserModels;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using Microsoft.AspNetCore.Authentication.Google;
+using System.Security.Claims;
 
 namespace Faxai.Controllers
 {
@@ -138,6 +142,81 @@ namespace Faxai.Controllers
             return View("DeliveryForm", model);
         }
 
+        [HttpPost]
+        public IActionResult ConfirmDeleteUser(int userId)
+        {
+            try
+            {
+                // Construct SQL command to delete the user
+                string commandText = $"DELETE FROM Naudotojas WHERE ID = {userId}";
+                // Note: Use parameterized queries to prevent SQL injection
+
+                bool success = DataSource.UpdateDataSQL(commandText);
+
+                if (success)
+                {
+                    // Redirect to a confirmation page or user list
+                    return RedirectToAction("Index"); // Replace with your user list page
+                }
+                else
+                {
+                    // Handle failure (e.g., display error message)
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception (e.g., log the error and display an error message)
+            }
+
+            // Return back to the delete confirmation view if deletion fails
+            return View("DeleteUser", userId);
+        }
+
+        public IActionResult GoogleLogin()
+        {
+            var redirectUrl = Url.Action("GoogleResponse");
+            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        }
+
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var authenticateResult = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            if (!authenticateResult.Succeeded)
+                return RedirectToAction("Login"); // Redirect to login page if authentication failed
+
+            var emailClaim = authenticateResult.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+            if (emailClaim == null)
+                return RedirectToAction("Login"); // No email claim found, redirect to login page
+
+            // Search in the database for the user with this email
+            string commandText = $"SELECT * FROM Naudotojas WHERE El_Pastas = '{emailClaim}'";
+            // Note: Use parameterized queries to prevent SQL injection
+            DataView userData = DataSource.ExecuteSelectSQL(commandText);
+
+            if (userData != null && userData.Table.Rows.Count > 0)
+            {
+                // User is found in local database. Set session.
+                var userRow = userData.Table.Rows[0];
+                HttpContext.Session.SetString("UserID", userRow["ID"].ToString());
+                HttpContext.Session.SetString("UserName", userRow["Vardas"].ToString());
+                // Add other necessary session settings as needed
+
+                return Redirect("/Home/HomePage"); // Redirect to home page or other secure page
+            }
+            else
+            {
+                // User not found, optionally create a new user record in your database
+                // ...
+
+                // After creating the user, set session variables as above
+                // ...
+
+                return Redirect("/Home/HomePage"); // Redirect to home page or other secure page
+            }
+        }
+
+
 
         [HttpPost]
         public IActionResult SubmitNewDeliveryInfo(DeliveryInfoModel model)
@@ -211,10 +290,5 @@ namespace Faxai.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult ConfirmDeleteUser()
-        {
-            return RedirectToAction("Index", "Home");
-        }
     }
 }
