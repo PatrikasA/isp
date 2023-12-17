@@ -2,30 +2,33 @@
 
 <h2>Visos Prekės</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Pavadinimas</th>
-            <th>Kaina</th>
-            <th>Kiekis Sandėlyje</th>
-            <th>Aprašymas</th>
-            <th>Žemiausia</th>
-            <!-- Papildomi stulpeliai pagal poreikį -->
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var preke in Model)
-        {
+@if (Model == null || Model.Count == 0)
+{
+    <p>Nėra prekių.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>@preke.ID</td>
-                <td>@preke.Pavadinimas</td>
-                <td>@preke.Kaina</td>
-                <td>@preke.Kiekis_Sandelyje</td>
-                <td>@preke.Aprasymas</td>
-                <td>@preke.Zemiausia_Kaina_Per_10d</td>
-                <!-- Papildomi stulpeliai pagal poreikį -->
+                <th>Pavadinimas</th>
+                <th>Kaina</th>
+                <th>Kiekis Sandėlyje</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var preke in Model)
+            {
+                <tr>
+                    <td>@preke.Pavadinimas</td>
+                    <td>@preke.Kaina</td>
+                    <td>@preke.Kiekis_Sandelyje</td>
+
+                    <td>
+                        <a href="@Url.Action("Details", "Products", new { id = preke.ID })">Detaliau</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -21,59 +21,188 @@ namespace Faxai.Controllers
             return View();
         }
 
-        // POST: Products/CreateProduct
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreateProduct(ProductCreateModel productModel)
         {
-                if (ModelState.IsValid)
+            if (ModelState.IsValid)
+            {
+                try
                 {
-                    try
-                    {
-                        var userId = HttpContext.Session.GetString("UserID");
+                    var userId = HttpContext.Session.GetString("UserID");
 
                     StringBuilder commandTextBuilder = new StringBuilder();
-                        commandTextBuilder.Append("INSERT INTO Preke (Pavadinimas, Kaina, Kiekis_Sandelyje, Aprasymas, Vertinimo_Vidurkis, Zemiausia_Kaina_Per_10d, NaudotojasID) ");
-                        commandTextBuilder.AppendFormat("VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}')",
-                            productModel.Pavadinimas, productModel.Kaina, productModel.Kiekis_Sandelyje, productModel.Aprasymas, 0, productModel.Kaina, userId);
+                    commandTextBuilder.Append("INSERT INTO Preke (Pavadinimas, Kaina, Kiekis_Sandelyje, Aprasymas, Vertinimo_Vidurkis, Zemiausia_Kaina_Per_10d, NaudotojasID) ");
+                    commandTextBuilder.AppendFormat("VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}')",
+                        productModel.Pavadinimas, productModel.Kaina, productModel.Kiekis_Sandelyje, productModel.Aprasymas, 0, productModel.Kaina, userId);
 
-                        string commandText = commandTextBuilder.ToString();
-                        // Note: It's important to use parameterized queries to prevent SQL injection
+                    string commandText = commandTextBuilder.ToString();
+                    bool success = DataSource.UpdateDataSQL(commandText);
 
-                        bool success = DataSource.UpdateDataSQL(commandText);
-
-                        if (success)
-                        {
-                            return View("Product");
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", "PREKES NEPRIDEJO due to a database error.");
-                        }
-                    }
-                    catch (Exception ex)
+                    if (success)
                     {
-                        ModelState.AddModelError("", "An error occurred during registration.");
+                        return View("DeleteProduct");
                     }
+                    else
+                    {
+                        ModelState.AddModelError("", "PREKES NEPRIDEJO due to a database error.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "An error occurred during registration.");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Please correct the errors and try again.");
+            }
+            return View("CreateProduct", productModel);
+        }
+        [HttpGet]
+        public IActionResult EditProduct(int id)
+        {
+            DataView prekesDuomenys = DataSource.ExecuteSelectSQL($"SELECT * FROM Preke WHERE ID = {id}");
+
+            if (prekesDuomenys != null && prekesDuomenys.Count > 0)
+            {
+                DataRow prekesEilute = prekesDuomenys.ToTable().Rows[0];
+
+                ProductViewModel preke = new ProductViewModel
+                {
+                    ID = Convert.ToInt32(prekesEilute["ID"]),
+                    Pavadinimas = Convert.ToString(prekesEilute["Pavadinimas"]),
+                    Kaina = Convert.ToDecimal(prekesEilute["Kaina"]),
+                    Kiekis_Sandelyje = Convert.ToInt32(prekesEilute["Kiekis_Sandelyje"]),
+                    Aprasymas = Convert.ToString(prekesEilute["Aprasymas"]),
+                };
+
+                return View(preke);
+            }
+            else
+            {
+                // Jei prekė nerasta, grąžiname 404 Not Found
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult EditProduct(ProductViewModel preke)
+        {
+            if (ModelState.IsValid)
+            {
+                
+                StringBuilder commandTextBuilder = new StringBuilder();
+                commandTextBuilder.AppendFormat("UPDATE Preke SET Pavadinimas = '{0}', Kaina = '{1}', Kiekis_Sandelyje = '{2}', Aprasymas = '{3}' WHERE ID = {4}", preke.Pavadinimas, preke.Kaina, preke.Kiekis_Sandelyje, preke.Aprasymas, preke.ID);
+                string commandText = commandTextBuilder.ToString();
+                bool success = DataSource.UpdateDataSQL(commandText);
+
+                if (success)
+                {
+                    return View("DeleteProduct");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Please correct the errors and try again.");
+                    // Jei atnaujinimas nepavyksta, grąžiname klaidą
+                    ModelState.AddModelError("", "Klaida atnaujinant prekę.");
+                    return View(preke);
                 }
-                return View("CreateProduct", productModel);
-        }
-
-        public IActionResult EditProduct()
-        {
-            return View();
+            }
+            else
+            {
+                   return View(preke);
+            }
         }
         public IActionResult DeleteProduct()
         {
-            return View();
+            // Gauti naudotojo ID iš sesijos
+            var userId = HttpContext.Session.GetString("UserID");
+
+            if (userId == null)
+            {
+                return View("Product");
+            }
+            else
+            {
+                string sqlUzklausa = $"SELECT * FROM Preke WHERE NaudotojasID = {userId}";
+                DataView prekiuDuomenys = DataSource.ExecuteSelectSQL(sqlUzklausa);
+
+                var prekiuSarasas = prekiuDuomenys.ToTable().AsEnumerable().Select(row => new ProductViewModel
+                {
+                    ID = row.Field<int>("ID"),
+                    Pavadinimas = row.Field<string>("Pavadinimas"),
+                    Kaina = row.Field<decimal>("Kaina"),
+                    Kiekis_Sandelyje = row.Field<int>("Kiekis_Sandelyje"),
+                    Aprasymas = row.Field<string>("Aprasymas"),
+                    Zemiausia_Kaina_Per_10d = row.Field<decimal>("Zemiausia_Kaina_Per_10d")
+                }).ToList();
+                return View("DeleteProduct", prekiuSarasas);
+            }
+
         }
-        public IActionResult FullPoductReview()
+        public IActionResult DeleteByID(int id)
         {
-            return View();
+            try
+            {
+                var userId = HttpContext.Session.GetString("UserID");
+
+                string patikrinimoUzklausa = $"SELECT COUNT(*) FROM Preke WHERE ID = {id} AND NaudotojasID = {userId}";
+                int prekesKiekis = Convert.ToInt32(DataSource.ExecuteSelectSQL(patikrinimoUzklausa)[0]["Column1"]);
+
+                if (prekesKiekis > 0)
+                {
+                    string deleteUzklausa = $"DELETE FROM Preke WHERE ID = {id}";
+                    if (DataSource.UpdateDataSQL(deleteUzklausa))
+                    {
+                        return View("DeleteProduct");
+                    }
+
+                    return Ok(); 
+                }
+                else
+                {
+                    // Jei prekė nepriklauso šiam naudotojui
+                    return BadRequest("Ši prekė neegzistuoja arba nepriklauso jums.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Serverio klaida: {ex.Message}");
+            }
         }
+        public IActionResult Details(int id)
+        {
+            // Gaukite prekės duomenis iš duomenų bazės pagal ID
+            ProductViewModel preke = GetProductById(id);
+
+            if (preke == null)
+            {
+                // Jei prekė nerasta, nukreipkite į Index veiksmą arba parodykite klaidos puslapį
+                return RedirectToAction("Index");
+            }
+
+            // Grąžinkite peržiūrą su prekės duomenimis
+            return View("Product", preke);
+        }
+        private ProductViewModel GetProductById(int id)
+        {          
+            string sqlUzklausa = $"SELECT * FROM Preke WHERE ID = {id}";
+            DataView prekiuDuomenys = DataSource.ExecuteSelectSQL(sqlUzklausa);
+
+            var prekiuSarasas = prekiuDuomenys.ToTable().AsEnumerable().Select(row => new ProductViewModel
+            {
+                ID = row.Field<int>("ID"),
+                Pavadinimas = row.Field<string>("Pavadinimas"),
+                Kaina = row.Field<decimal>("Kaina"),
+                Kiekis_Sandelyje = row.Field<int>("Kiekis_Sandelyje"),
+                Aprasymas = row.Field<string>("Aprasymas"),
+                Zemiausia_Kaina_Per_10d = row.Field<decimal>("Zemiausia_Kaina_Per_10d")
+            }).ToList();
+
+            var preke = prekiuSarasas.FirstOrDefault();
+            return preke;
+        }
+        
+
     }
 }
