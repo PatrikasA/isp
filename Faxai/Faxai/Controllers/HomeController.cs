@@ -1,5 +1,6 @@
 ﻿using Faxai.Helper;
 using Faxai.Models;
+using Faxai.Models.ProductModels;
 using Faxai.Models.UserModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
@@ -19,7 +20,22 @@ namespace Faxai.Controllers
 
         public IActionResult HomePage()
         {
-            return View();
+            // Gaukite prekių sąrašą iš duomenų bazės
+            DataView prekiuDuomenys = DataSource.ExecuteSelectSQL("SELECT * FROM Preke");
+
+            // Paverčiame duomenis modeliu, kad galėtume juos perduoti į peržiūrą
+            var prekiuSarasas = prekiuDuomenys.ToTable().AsEnumerable().Select(row => new ProductViewModel
+            {
+                ID = row.Field<int>("ID"),
+                Pavadinimas = row.Field<string>("Pavadinimas"),
+                Kaina = row.Field<decimal>("Kaina"),
+                Kiekis_Sandelyje = row.Field<int>("Kiekis_Sandelyje"),
+                Aprasymas = row.Field<string>("Aprasymas"),
+                Zemiausia_Kaina_Per_10d = row.Field<decimal>("Zemiausia_Kaina_Per_10d")
+                // Papildomai pridėkite kitus stulpelius pagal poreikį
+            }).ToList();
+
+            return View("HomePage", prekiuSarasas); 
         }
 
 
