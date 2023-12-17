@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using Faxai.Helper;
 using Faxai.Models;
 using Faxai.Models.UserModels;
+using Faxai.Models.ReviewModels;
 using System.Data;
 using System.Diagnostics;
 using System.Text;
@@ -12,9 +13,9 @@ namespace Faxai.Controllers
 {
     public class ProductsController : Controller
     {
-        public IActionResult Product()
+        public IActionResult Product(ReviewViewModel tupleModel)
         {
-            return View();
+            return View("Product", tupleModel);
         }
         public IActionResult CreateProduct()
         {
@@ -91,7 +92,7 @@ namespace Faxai.Controllers
         {
             if (ModelState.IsValid)
             {
-                
+
                 StringBuilder commandTextBuilder = new StringBuilder();
                 commandTextBuilder.AppendFormat("UPDATE Preke SET Pavadinimas = '{0}', Kaina = '{1}', Kiekis_Sandelyje = '{2}', Aprasymas = '{3}' WHERE ID = {4}", preke.Pavadinimas, preke.Kaina, preke.Kiekis_Sandelyje, preke.Aprasymas, preke.ID);
                 string commandText = commandTextBuilder.ToString();
@@ -110,7 +111,7 @@ namespace Faxai.Controllers
             }
             else
             {
-                   return View(preke);
+                return View(preke);
             }
         }
         public IActionResult DeleteProduct()
@@ -157,7 +158,7 @@ namespace Faxai.Controllers
                         return View("DeleteProduct");
                     }
 
-                    return Ok(); 
+                    return Ok();
                 }
                 else
                 {
@@ -181,11 +182,22 @@ namespace Faxai.Controllers
                 return RedirectToAction("Index");
             }
 
+            ReviewModel reviewModel = new ReviewModel();
+
+            List<ReviewModel> reviews = GetReviewsForProduct(id);
+
+            ReviewViewModel tupleModel = new ReviewViewModel
+            {
+                Product = preke,
+                Reviews = reviews,
+                NewReview = reviewModel
+            };
+
             // Grąžinkite peržiūrą su prekės duomenimis
-            return View("Product", preke);
+            return View("Product", tupleModel);
         }
         private ProductViewModel GetProductById(int id)
-        {          
+        {
             string sqlUzklausa = $"SELECT * FROM Preke WHERE ID = {id}";
             DataView prekiuDuomenys = DataSource.ExecuteSelectSQL(sqlUzklausa);
 
@@ -202,7 +214,30 @@ namespace Faxai.Controllers
             var preke = prekiuSarasas.FirstOrDefault();
             return preke;
         }
-        
 
+        private List<ReviewModel> GetReviewsForProduct(int productId)
+        {
+
+            // Use a SELECT query to retrieve reviews for the specified product ID
+            string commandText = $"SELECT * FROM Atsiliepimas WHERE PrekeID = {productId}";
+
+            // Execute the query and get the result
+            DataView reviewsDataView = DataSource.ExecuteSelectSQL(commandText);
+
+            // Convert the DataView to a List<ReviewModel>
+            List<ReviewModel> reviews = reviewsDataView.ToTable().AsEnumerable().Select(row => new ReviewModel
+            {
+                // Map database columns to ReviewModel properties
+                Rating = Convert.ToInt32(row["Ivertis"]),
+                Comment = Convert.ToString(row["Komentaras"]),
+                CreationDate = Convert.ToDateTime(row["Sukurimo_Data"]),
+                EditDate = Convert.ToDateTime(row["Redagavimo_Data"]),
+                AuthorID = Convert.ToInt32(row["AutoriusID"]),
+                ProductID = Convert.ToInt32(row["PrekeID"]),
+            }).ToList();
+
+            return reviews;
+
+        }
     }
 }
