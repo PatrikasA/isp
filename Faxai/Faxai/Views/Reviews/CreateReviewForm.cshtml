@@ -1,21 +1,33 @@
-﻿@{
+﻿@model Faxai.Models.ReviewModels.ReviewModel
+
+@{
     ViewData["Title"] = "Palikti atsiliepimą";
 }
 <h1>@ViewData["Title"]</h1>
 
-<form asp-controller="Products" asp-action="Product" method="post">
-    <div class="form-group">
-        <label for="rating">Įvertinimas (nuo 1 iki 5):</label>
-        <input type="number" class="form-control" id="rating" name="Rating" min="1" max="5" required>
-    </div>
+<div class="text-center">
+    <h1 class="display-4">Įkelti atsiliepimą</h1>
 
-    <div class="form-group">
-        <label for="comment">Komentaras:</label>
-        <textarea class="form-control" id="comment" name="Comment" rows="4"></textarea>
-    </div>
+    @using (Html.BeginForm("CreateReview", "Reviews", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
 
-    <br />
-    <button type="submit" class="btn btn-primary">Patvirtinti</button>
-</form>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Rating, new { @for = "rating" })
+            @Html.TextBoxFor(m => m.Rating, new { @class = "form-control", @type = "number", @id = "rating", @min = "1", @max = "5", @required = "required" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Comment, new { @for = "comment" })
+            @Html.TextAreaFor(m => m.Comment, new { @class = "form-control", @id = "comment", @rows = "4" })
+        </div>
+
+        <br />
+
+        <button type="submit" class="btn btn-primary">Patvirtinti</button>
+    }
+</div>
+
 <!-- <br /> -->
 <!-- <a class="btn btn-dark" asp-area="" asp-controller="Products" asp-action="Product">Atgal</a> -->
+
