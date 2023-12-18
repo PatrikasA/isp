@@ -26,10 +26,13 @@
         <dt>Žemiausia Kaina Per 10d:</dt>
         <dd>@Model.Product.Zemiausia_Kaina_Per_10d</dd>
 
+        <dt>Kategorija:</dt>
+        <dd>@Model.Product.Kategorija</dd>
         <!-- Papildomi stulpeliai pagal poreikį -->
     </dl>
 </div>
 
+<a href="/ProductsController/Filter?category=@Model.Product.Kategorija" class="btn btn-primary">Filtruoti pagal kategoriją</a>
 <a class="btn btn-dark" asp-area="" asp-controller="Home" asp-action="HomePage">Atgal</a>
 
 
