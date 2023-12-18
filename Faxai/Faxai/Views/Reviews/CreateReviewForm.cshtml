@@ -1,21 +1,50 @@
-﻿@{
+﻿@model Faxai.Models.ReviewModels.ReviewViewModel
+
+@{
     ViewData["Title"] = "Palikti atsiliepimą";
 }
 <h1>@ViewData["Title"]</h1>
 
-<form asp-controller="Products" asp-action="Product" method="post">
-    <div class="form-group">
-        <label for="rating">Įvertinimas (nuo 1 iki 5):</label>
-        <input type="number" class="form-control" id="rating" name="Rating" min="1" max="5" required>
-    </div>
+<div class="text-center">
+    <h1 class="display-4">Įkelti atsiliepimą</h1>
 
-    <div class="form-group">
-        <label for="comment">Komentaras:</label>
-        <textarea class="form-control" id="comment" name="Comment" rows="4"></textarea>
-    </div>
+    @using (Html.BeginForm("CreateReview", "Reviews", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
 
-    <br />
-    <button type="submit" class="btn btn-primary">Patvirtinti</button>
-</form>
-<br />
-<a class="btn btn-dark" asp-area="" asp-controller="Products" asp-action="Product">Atgal</a>
+        @Html.HiddenFor(m => m.Product.ID)
+        @Html.HiddenFor(m => m.Product.Pavadinimas)
+        @Html.HiddenFor(m => m.Product.Kaina)
+        @Html.HiddenFor(m => m.Product.Kiekis_Sandelyje)
+        @Html.HiddenFor(m => m.Product.Aprasymas)
+        @Html.HiddenFor(m => m.Product.Zemiausia_Kaina_Per_10d)
+        @Html.HiddenFor(m => m.Product.Kategorija)
+
+        @for (int i = 0; i < Model.Reviews.Count; i++)
+        {
+            @Html.HiddenFor(m => m.Reviews[i].Rating)
+            @Html.HiddenFor(m => m.Reviews[i].Comment)
+            @Html.HiddenFor(m => m.Reviews[i].AuthorID)
+            @Html.HiddenFor(m => m.Reviews[i].CreationDate)
+            @Html.HiddenFor(m => m.Reviews[i].ProductID)
+        }
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.NewReview.Rating, new { @for = "rating" })
+            @Html.TextBoxFor(m => m.NewReview.Rating, new { @class = "form-control", @type = "number", @id = "rating", @min = "1", @max = "5", @required = "required" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.NewReview.Comment, new { @for = "comment" })
+            @Html.TextAreaFor(m => m.NewReview.Comment, new { @class = "form-control", @id = "comment", @rows = "4" })
+        </div>
+
+        <br />
+
+        <button type="submit" class="btn btn-primary">Patvirtinti</button>
+    }
+</div>
+
+<!-- <br /> -->
+<!-- <a class="btn btn-dark" asp-area="" asp-controller="Products" asp-action="Product">Atgal</a> -->
+

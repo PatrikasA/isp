@@ -1,29 +1,28 @@
-﻿@{
+﻿@model Faxai.Models.ReviewModels.ReviewViewModel
+@{
     ViewData["Title"] = "Atsiliepimas";
 }
+
 <h1>@ViewData["Title"]</h1>
 
 <p>Šioje skiltyje detali informacija apie konkretų atsiliepimą</p>
 
-<div class="row, review-item">
-    <div class="col-2">
-        <p class="review-text">Vardenis P.</p>
+@if (Model != null && Model.NewReview != null)
+{
+    <div class="row review-item">
+        <div class="col-3">
+            <p class="review-text">@Model.NewReview.AuthorName</p>
+        </div>
+        <div class="col-2">
+            <p class="review-text">@Model.NewReview.Rating <i class="bi bi-star-fill"></i></p>
+        </div>
+        <div class="col-4">
+            <p class="review-text">@Model.NewReview.Comment</p>
+        </div>
+        <div class="col-3">
+            <p class="review-text">@Model.NewReview.CreationDate.ToString("MMMM dd")</p>
+        </div>
     </div>
-    <div class="col-2">
-        <p class="review-text">3.5 žvaigždutės</p>
-    </div>
-    <div class="col-2">
-        <p class="review-text">Very nice product!</p>
-    </div>
-    <div class="col-2">
-        <p class="review-text">October 23rd</p>
-    </div>
-    <div class="col-2">
-        <a class="btn btn-primary" asp-area="" asp-controller="Reviews" asp-action="EditReviewForm">Redaguoti</a>
-    </div>
-    <div class="col-2">
-        <a class="btn btn-dark" asp-area="" asp-controller="Reviews" asp-action="DeleteReviewForm">Ištrinti</a>
-    </div>
-</div>
+}
 
-<a class="btn btn-dark" asp-area="" asp-controller="Products" asp-action="Product">Atgal į prekės aprašymą</a>
+<a class="btn btn-dark" href="@Url.Action("Details", "Products", new { id = @Model.Product.ID })">Atgal į prekės aprašymą</a>

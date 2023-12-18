@@ -1,9 +1,29 @@
-﻿@{
+﻿@model Faxai.Models.ReviewModels.ReviewViewModel
+@{
     ViewData["Title"] = "Ištrinti atsiliepimą";
 }
 <h1>@ViewData["Title"]</h1>
 
 <p> Ar tikrai norite ištrinti šį atsiliepimą? </p>
+@if (Model.NewReview != null)
+{
+    <p>Atsiliepimo komentaras: @Model.NewReview.Comment</p>
+}
 
-<a class="btn btn-danger" asp-area="" asp-controller="Products" asp-action="Product">Ištrinti</a>
-<a class="btn btn-secondary" asp-area="" asp-controller="Products" asp-action="Product">Atšaukti</a>
+<!-- Form to handle deletion using POST method -->
+<form id="deleteForm" method="post" asp-action="DeleteReview" asp-controller="Reviews">
+    <input type="hidden" name="id" value="@Model.NewReview.ID" />
+    <input type="hidden" name="PrekesID" value="@Model.Product.ID" />
+
+    <button type="submit" class="btn btn-danger">Ištrinti</button>
+</form>
+
+<a class="btn btn-secondary" href="@Url.Action("Details", "Products", new { id = @Model.Product.ID })">Atšaukti</a>
+
+
+<script>
+    document.getElementById("deleteForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+        this.submit();
+    });
+</script>

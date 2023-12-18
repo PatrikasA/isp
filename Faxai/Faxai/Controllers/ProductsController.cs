@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using Faxai.Helper;
 using Faxai.Models;
 using Faxai.Models.UserModels;
+using Faxai.Models.ReviewModels;
 using System.Data;
 using System.Diagnostics;
 using System.Text;
@@ -12,9 +13,9 @@ namespace Faxai.Controllers
 {
     public class ProductsController : Controller
     {
-        public IActionResult Product()
+        public IActionResult Product(ReviewViewModel tupleModel)
         {
-            return View();
+            return View("Product", tupleModel);
         }
         public IActionResult CreateProduct()
         {
@@ -196,7 +197,19 @@ namespace Faxai.Controllers
             {
                 return RedirectToAction("Index");
             }
-            return View("Product", preke);
+
+            ReviewModel reviewModel = new ReviewModel();
+
+            List<ReviewModel> reviews = GetReviewsForProduct(id);
+
+            ReviewViewModel tupleModel = new ReviewViewModel
+            {
+                Product = preke,
+                Reviews = reviews,
+                NewReview = reviewModel
+            };
+
+            return View("Product", tupleModel);
         }
         private ProductViewModel GetProductById(int id)
         {
@@ -216,6 +229,31 @@ namespace Faxai.Controllers
 
             var preke = prekiuSarasas.FirstOrDefault();
             return preke;
+        }
+
+        private List<ReviewModel> GetReviewsForProduct(int productId)
+        {
+
+            // Use a SELECT query to retrieve reviews for the specified product ID
+            string commandText = $"SELECT * FROM Atsiliepimas WHERE PrekeID = {productId}";
+
+            // Execute the query and get the result
+            DataView reviewsDataView = DataSource.ExecuteSelectSQL(commandText);
+
+            // Convert the DataView to a List<ReviewModel>
+            List<ReviewModel> reviews = reviewsDataView.ToTable().AsEnumerable().Select(row => new ReviewModel
+            {
+                // Map database columns to ReviewModel properties
+                ID = Convert.ToInt32(row["ID"]),
+                Rating = Convert.ToInt32(row["Ivertis"]),
+                Comment = Convert.ToString(row["Komentaras"]),
+                CreationDate = Convert.ToDateTime(row["Sukurimo_Data"]),
+                EditDate = Convert.ToDateTime(row["Redagavimo_Data"]),
+                AuthorID = Convert.ToInt32(row["AutoriusID"]),
+                ProductID = Convert.ToInt32(row["PrekeID"]),
+            }).ToList();
+
+            return reviews;
         }
 
         public ActionResult Filter(string kategorija)
