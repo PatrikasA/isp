@@ -273,7 +273,9 @@ namespace Faxai.Controllers
 
         public ActionResult Filter(string kategorija)
         {
-            string sqlUzklausa = $"SELECT * FROM Preke WHERE Kategorija = {kategorija}";
+            string kat = HttpContext.Request.Query["kategorija"];
+
+            string sqlUzklausa = $"SELECT * FROM Preke WHERE Kategorija = '{kat}'";
             DataView prekiuDuomenys = DataSource.ExecuteSelectSQL(sqlUzklausa);
 
             var prekiuSarasas = prekiuDuomenys.ToTable().AsEnumerable().Select(row => new ProductViewModel
