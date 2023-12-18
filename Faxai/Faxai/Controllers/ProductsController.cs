@@ -76,7 +76,8 @@ namespace Faxai.Controllers
                     Kaina = Convert.ToDecimal(prekesEilute["Kaina"]),
                     Kiekis_Sandelyje = Convert.ToInt32(prekesEilute["Kiekis_Sandelyje"]),
                     Aprasymas = Convert.ToString(prekesEilute["Aprasymas"]),
-                    Zemiausia_Kaina_Per_10d = Convert.ToDecimal(prekesEilute["Zemiausia_Kaina_Per_10d"])
+                    Zemiausia_Kaina_Per_10d = Convert.ToDecimal(prekesEilute["Zemiausia_Kaina_Per_10d"]),
+                    Kategorija = Convert.ToString(prekesEilute["Kategorija"]),
                 };
 
                 return View(preke);
@@ -109,10 +110,19 @@ namespace Faxai.Controllers
                         var flag = DataSource.UpdateDataSQL(commandText1);
                         if (flag)
                         {
-                            Dictionary<string, string> dataToChange = new Dictionary<string, string>();
-                            string price = preke.Kaina.ToString();
-                            dataToChange.Add("Prekes nauja kaina", price);
-                            EmailHelper.SendMail("gytis.uzkuraitis@gmail.com", "Kaina", dataToChange);
+
+                            string sqlUzklausa = $"SELECT * FROM Naudotojas WHERE Pasirinkimas_Gauti_Naujienlaiskius = 1";
+                            DataView prekiuDuomenys = DataSource.ExecuteSelectSQL(sqlUzklausa);
+
+                            var emailList = prekiuDuomenys.ToTable().AsEnumerable().Select(row => new string (row.Field<string>("El_Pastas"))).ToList();
+
+                            foreach(var email in emailList)
+                            {
+                                Dictionary<string, string> dataToChange = new Dictionary<string, string>();
+                                string price = preke.Kaina.ToString();
+                                dataToChange.Add("Prekes nauja kaina", price);
+                                EmailHelper.SendMail(email, "Kaina", dataToChange);
+                            }
 
                             return View("DeleteProduct");
                         }
