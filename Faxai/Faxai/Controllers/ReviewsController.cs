@@ -151,9 +151,9 @@ namespace Faxai.Controllers
                         // EMAIL SENDING
                         commandTextBuilder = new StringBuilder();
                         commandTextBuilder.Append("SELECT Naudotojas.* FROM Naudotojas ");
-                        commandTextBuilder.Append("JOIN Products ON Naudotojas.ID = Products.NaudotojasID ");
-                        commandTextBuilder.Append("WHERE Products.ID = @ProductId");
-                        commandTextBuilder.AppendFormat("WHERE Products.ID = {0}", tupleModel.Product.ID);
+                        commandTextBuilder.Append("JOIN Preke AS Products ON Naudotojas.ID = Products.NaudotojasID ");
+  
+                        commandTextBuilder.AppendFormat(" WHERE Products.ID = {0}", tupleModel.Product.ID);
 
                         commandText = commandTextBuilder.ToString();
 
@@ -161,9 +161,9 @@ namespace Faxai.Controllers
 
                         if (resultView != null && resultView.Count > 0)
                         {
-                            DataRowView firstRow = resultView[0];
-                            string email = firstRow["Email"].ToString();
-                            // Sending the email
+                            string email = resultView.Table.Rows[0]["El_Pastas"].ToString();
+                            Dictionary<string, string> dataToChange = new Dictionary<string, string>();
+                            EmailHelper.SendMail(email, "Komentaras", dataToChange);
                         }
 
 
