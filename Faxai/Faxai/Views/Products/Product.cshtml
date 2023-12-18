@@ -1,4 +1,5 @@
-﻿@model Faxai.Models.ReviewModels.ReviewViewModel
+﻿@using Faxai.Models.ReviewModels
+@model Faxai.Models.ReviewModels.ReviewViewModel
 
 @{
     var selectedReviewId = ViewData["SelectedReviewId"] as string;
@@ -35,15 +36,47 @@
 
 <h1>Prekės atsiliepimai</h1>
 
-<a class="btn btn-primary" data-toggle="modal" data-target="#createReviewModal">Palikti atsiliepimą</a>
+@if (!UserHasLeftReview(Model.Reviews))
+{
+    <a class="btn btn-primary" data-toggle="modal" data-target="#createReviewModal">Palikti atsiliepimą</a>
+}
+else
+{
+    var userReview = GetUserReview(Model.Reviews);
+    <div class="row review-item justify-content-between">
+        <div class="col-2">
+            <p class="review-text">@userReview.Rating <i class="bi bi-star-fill"></i></p>
+        </div>
+        <div class="col-4">
+            <p class="review-text">@userReview.Comment</p>
+        </div>
+        <div class="col-2">
+            <a href="@Url.Action("FullReview", "Reviews", new { tupleModel = Model, id = userReview.ID })" class="btn btn-primary">
+                <i class="bi bi-eye"></i> Peržiūrėti
+            </a>
+        </div>
+        <div class="col-2">
+            <a href="@Url.Action("EditReviewForm", "Reviews", new { tupleModel = Model, id = userReview.ID })" class="btn btn-warning">
+                <i class="bi bi-pencil"></i> Redaguoti
+            </a>
+        </div>
+        <div class="col-2">
+            <a href="@Url.Action("DeleteReviewForm", "Reviews", new { tupleModel = Model, id = userReview.ID })" class="btn btn-danger">
+                <i class="bi bi-trash"></i> Ištrinti
+            </a>
+        </div>
+    </div>
+}
 
-@foreach (var review in Model.Reviews)
+
+
+@foreach (var review in Model.Reviews.Where(r => r.ID != GetUserReview(Model.Reviews)?.ID))
 {
     <div class="row review-item justify-content-between">
         <div class="col-2">
             <p class="review-text">@review.Rating <i class="bi bi-star-fill"></i></p>
         </div>
-        <div class="col-4">
+        <div class="col-8">
             <p class="review-text">@review.Comment</p>
         </div>
         <div class="col-2">
@@ -51,18 +84,9 @@
                 <i class="bi bi-eye"></i> Peržiūrėti
             </a>
         </div>
-        <div class="col-2">
-            <a href="@Url.Action("EditReviewForm", "Reviews", new { tupleModel = Model, id = review.ID })" class="btn btn-warning">
-                <i class="bi bi-pencil"></i> Redaguoti
-            </a>
-        </div>
-        <div class="col-2">
-            <a href="@Url.Action("DeleteReviewForm", "Reviews", new { tupleModel = Model, id = review.ID })" class="btn btn-danger">
-                <i class="bi bi-trash"></i> Ištrinti
-            </a>
-        </div>
     </div>
 }
+
 
 <!-- Create Review Modal -->
 <div class="modal fade" id="createReviewModal" tabindex="-1" role="dialog" aria-labelledby="createReviewModalLabel" aria-hidden="true">
@@ -80,3 +104,23 @@
         </div>
     </div>
 </div>
+
+@functions {
+    // Check if the current user has left a review for the product
+    bool UserHasLeftReview(List<ReviewModel> reviews)
+    {
+        var currentUserId = int.Parse(Context.Session.GetString("UserID"));
+
+        // Check if there's a review by the current user for the current product
+        return reviews.Any(r => r.AuthorID == currentUserId && r.ProductID == Model.Product.ID);
+    }
+
+    // Get the user's existing review
+    ReviewModel GetUserReview(List<ReviewModel> reviews)
+    {
+        var currentUserId = int.Parse(Context.Session.GetString("UserID"));
+
+        return reviews.FirstOrDefault(r => r.AuthorID == currentUserId && r.ProductID == Model.Product.ID);
+    }
+}
+

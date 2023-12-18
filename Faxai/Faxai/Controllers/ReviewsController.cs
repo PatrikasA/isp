@@ -141,7 +141,6 @@ namespace Faxai.Controllers
                         tupleModel.NewReview.Rating, tupleModel.NewReview.Comment, tupleModel.NewReview.CreationDate.ToString("yyyy-MM-dd"),
                         tupleModel.NewReview.CreationDate.ToString("yyyy-MM-dd"), tupleModel.NewReview.AuthorID, tupleModel.NewReview.ProductID);
 
-                    // Add parameters to the SqlCommand or use a parameterized query with your ORM.
 
                     string commandText = commandTextBuilder.ToString();
 
@@ -149,8 +148,26 @@ namespace Faxai.Controllers
 
                     if (success)
                     {
-                        // Redirect to the "Details" action with the product ID
-                        return RedirectToAction("Details", "Products", new { id = tupleModel.Product.ID });
+                        // EMAIL SENDING
+                        commandTextBuilder = new StringBuilder();
+                        commandTextBuilder.Append("SELECT Naudotojas.* FROM Naudotojas ");
+                        commandTextBuilder.Append("JOIN Products ON Naudotojas.ID = Products.NaudotojasID ");
+                        commandTextBuilder.Append("WHERE Products.ID = @ProductId");
+                        commandTextBuilder.AppendFormat("WHERE Products.ID = {0}", tupleModel.Product.ID);
+
+                        commandText = commandTextBuilder.ToString();
+
+                        DataView resultView = DataSource.ExecuteSelectSQL(commandText);
+
+                        if (resultView != null && resultView.Count > 0)
+                        {
+                            DataRowView firstRow = resultView[0];
+                            string email = firstRow["Email"].ToString();
+                            // Sending the email
+                        }
+
+
+                            return RedirectToAction("Details", "Products", new { id = tupleModel.Product.ID });
                     }
                     else
                     {
@@ -170,7 +187,6 @@ namespace Faxai.Controllers
                 ModelState.AddModelError("", "Please correct the errors and try again.");
             }
 
-            // Return to the "Details" view with the product ID
             return RedirectToAction("Details", "Products", new { id = tupleModel.Product.ID });
         }
 
@@ -181,7 +197,6 @@ namespace Faxai.Controllers
             {
                 try
                 {
-                    // Assuming GetReviewById is a method that retrieves a review by its ID
                     ReviewModel existingReview = GetReviewById(id);
 
                     if (existingReview != null)
@@ -204,7 +219,6 @@ namespace Faxai.Controllers
 
                         if (success)
                         {
-                            // Redirect to the "Details" action with the product ID
                             return RedirectToAction("Details", "Products", new { id = productID });
                         }
                         else
@@ -231,7 +245,6 @@ namespace Faxai.Controllers
                 ModelState.AddModelError("", "Please correct the errors and try again.");
             }
 
-            // Return to the "Details" view with the product ID
             return RedirectToAction("Details", "Products", new { id = productID });
         }
 
