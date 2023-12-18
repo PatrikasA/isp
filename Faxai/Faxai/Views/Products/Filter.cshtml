@@ -6,6 +6,12 @@
 
 <h2>Prekės pagal kategoriją</h2>
 
+@if (Model == null || Model.Count == 0)
+{
+    <p>Nėra prekių pagal kategoriją.</p>
+}
+else
+{
 <table class="table">
     <tr>
         <th>Pavadinimas</th>
@@ -24,3 +30,4 @@
         </tr>
     }
 </table>
+}

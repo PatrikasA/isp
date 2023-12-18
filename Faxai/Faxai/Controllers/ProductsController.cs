@@ -109,6 +109,11 @@ namespace Faxai.Controllers
                         var flag = DataSource.UpdateDataSQL(commandText1);
                         if (flag)
                         {
+                            Dictionary<string, string> dataToChange = new Dictionary<string, string>();
+                            string price = preke.Kaina.ToString();
+                            dataToChange.Add("Prekes nauja kaina", price);
+                            EmailHelper.SendMail("gytis.uzkuraitis@gmail.com", "Kaina", dataToChange);
+
                             return View("DeleteProduct");
                         }
                         else
