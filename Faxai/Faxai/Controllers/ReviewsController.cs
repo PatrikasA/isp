@@ -22,17 +22,32 @@ namespace Faxai.Controllers
         {
             return View();
         }
-        public IActionResult EditReviewForm()
+        public IActionResult EditReviewForm(ReviewViewModel tupleModel, int id)
         {
-            return View();
+            ReviewModel selectedReview = GetReviewById(id);
+            tupleModel.NewReview = selectedReview;
+
+            tupleModel.Product = GetProductById(selectedReview.ProductID);
+
+            return View(tupleModel);
         }
-        public IActionResult DeleteReviewForm()
+        public IActionResult DeleteReviewForm(ReviewViewModel tupleModel, int id)
         {
-            return View();
+            ReviewModel selectedReview = GetReviewById(id);
+            tupleModel.NewReview = selectedReview;
+
+            tupleModel.Product = GetProductById(selectedReview.ProductID);
+
+            return View(tupleModel);
         }
-        public IActionResult FullReview()
+        public IActionResult FullReview(ReviewViewModel tupleModel, int id)
         {
-            return View();
+            ReviewModel selectedReview = GetReviewById(id);
+            tupleModel.NewReview = selectedReview;
+
+            tupleModel.Product = GetProductById(selectedReview.ProductID);
+
+            return View(tupleModel);
         }
 
         public List<ReviewModel> GetReviewsForProduct(int productId)
@@ -65,6 +80,49 @@ namespace Faxai.Controllers
             }
         }
 
+        private ReviewModel GetReviewById(int id)
+        {
+            string sqlUzklausa = $@"SELECT A.*, CONCAT(N.Vardas, ' ', N.Pavarde) AS AutoriausVardas
+                            FROM Atsiliepimas A
+                            INNER JOIN Naudotojas N ON A.AutoriusID = N.ID
+                            WHERE A.ID = {id}";
+            DataView atsiliepimuDuomenys = DataSource.ExecuteSelectSQL(sqlUzklausa);
+
+            var atsiliepimuSarasas = atsiliepimuDuomenys.ToTable().AsEnumerable().Select(row => new ReviewModel
+            {
+                ID = row.Field<int>("ID"),
+                Rating = row.Field<int>("Ivertis"),
+                Comment = row.Field<string>("Komentaras"),
+                CreationDate = row.Field<DateTime>("Sukurimo_Data"),
+                EditDate = row.Field<DateTime>("Redagavimo_Data"),
+                AuthorID = row.Field<int>("AutoriusID"),
+                ProductID = row.Field<int>("PrekeID"),
+                AuthorName = row.Field<string>("AutoriausVardas")
+            }).ToList();
+
+            var atsiliepimas = atsiliepimuSarasas.FirstOrDefault();
+            return atsiliepimas;
+        }
+
+        private ProductViewModel GetProductById(int id)
+        {
+            string sqlUzklausa = $"SELECT * FROM Preke WHERE ID = {id}";
+            DataView prekiuDuomenys = DataSource.ExecuteSelectSQL(sqlUzklausa);
+
+            var prekiuSarasas = prekiuDuomenys.ToTable().AsEnumerable().Select(row => new ProductViewModel
+            {
+                ID = row.Field<int>("ID"),
+                Pavadinimas = row.Field<string>("Pavadinimas"),
+                Kaina = row.Field<decimal>("Kaina"),
+                Kiekis_Sandelyje = row.Field<int>("Kiekis_Sandelyje"),
+                Aprasymas = row.Field<string>("Aprasymas"),
+                Zemiausia_Kaina_Per_10d = row.Field<decimal>("Zemiausia_Kaina_Per_10d"),
+                Kategorija = row.Field<string>("Kategorija")
+            }).ToList();
+
+            var preke = prekiuSarasas.FirstOrDefault();
+            return preke;
+        }
 
         [HttpPost]
         public IActionResult CreateReview(ReviewViewModel tupleModel)
@@ -114,6 +172,91 @@ namespace Faxai.Controllers
 
             // Return to the "Details" view with the product ID
             return RedirectToAction("Details", "Products", new { id = tupleModel.Product.ID });
+        }
+
+        [HttpPost]
+        public IActionResult EditReview(ReviewViewModel tupleModel, int id, int productID)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Assuming GetReviewById is a method that retrieves a review by its ID
+                    ReviewModel existingReview = GetReviewById(id);
+
+                    if (existingReview != null)
+                    {
+
+                        existingReview.Rating = tupleModel.NewReview.Rating;
+                        existingReview.Comment = tupleModel.NewReview.Comment;
+                        existingReview.EditDate = DateTime.Today;
+
+                        StringBuilder commandTextBuilder = new StringBuilder();
+                        commandTextBuilder.Append("UPDATE Atsiliepimas SET ");
+                        commandTextBuilder.AppendFormat("Ivertis = '{0}', ", tupleModel.NewReview.Rating);
+                        commandTextBuilder.AppendFormat("Komentaras = '{0}', ", tupleModel.NewReview.Comment);
+                        commandTextBuilder.AppendFormat("Redagavimo_Data = '{0}' ", existingReview.EditDate);
+                        commandTextBuilder.AppendFormat("WHERE ID = {0}", id);
+
+                        string commandText = commandTextBuilder.ToString();
+
+                        bool success = DataSource.UpdateDataSQL(commandText);
+
+                        if (success)
+                        {
+                            // Redirect to the "Details" action with the product ID
+                            return RedirectToAction("Details", "Products", new { id = productID });
+                        }
+                        else
+                        {
+                            _logger.LogError("Failed to edit review: Database update failed.");
+                            ModelState.AddModelError("", "Review editing failed due to a database error.");
+                        }
+                    }
+                    else
+                    {
+                        _logger.LogError("Failed to edit review: Review not found.");
+                        ModelState.AddModelError("", "Review not found.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Exception occurred during review editing. Error: {0}", ex.Message);
+                    ModelState.AddModelError("", "An error occurred during review editing.");
+                }
+            }
+            else
+            {
+                _logger.LogWarning("Model state is invalid. Errors: {0}", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+                ModelState.AddModelError("", "Please correct the errors and try again.");
+            }
+
+            // Return to the "Details" view with the product ID
+            return RedirectToAction("Details", "Products", new { id = productID });
+        }
+
+
+        [HttpPost]
+        public IActionResult DeleteReview(int id, int PrekesID)
+        {
+            try
+            {
+                string deleteUzklausa = $"DELETE FROM Atsiliepimas WHERE ID = {id}";
+                if (DataSource.UpdateDataSQL(deleteUzklausa))
+                {
+                    return RedirectToAction("Details", "Products", new { id = PrekesID });
+                }
+
+                return RedirectToAction("Details", "Products", new { id = PrekesID });
+                // Return an error response if the deletion fails
+                //return StatusCode(500, "Failed to delete the review.");
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Serverio klaida: {ex.Message}");
+            }
+            //return RedirectToAction("Details", "Products", new { id = PrekesID });
         }
 
     }

@@ -1,21 +1,31 @@
-﻿@{
+﻿@model Faxai.Models.ReviewModels.ReviewViewModel
+@{
     ViewData["Title"] = "Redaguoti atsiliepimą";
 }
 <h1>@ViewData["Title"]</h1>
 
-<form asp-controller="Products" asp-action="Product" method="post">
+<form asp-controller="Reviews" asp-action="EditReview" method="post">
+    <!-- Add a hidden input for the review ID -->
+    <input type="hidden" name="id" value="@Model.NewReview?.ID" />
+    <input type="hidden" name="productID" value="@Model.Product?.ID" />
+
+    <!-- Include other properties from the tupleModel if needed -->
+    <input type="hidden" name="tupleModel.Product" value="@Model.Product" />
+    <input type="hidden" name="tupleModel.Reviews" value="@Model.Reviews" />
+    <!-- Add more properties as needed -->
+
     <div class="form-group">
         <label for="rating">Įvertinimas (nuo 1 iki 5):</label>
-        <input type="number" class="form-control" id="rating" name="Rating" min="1" max="5" required>
+        <input type="number" class="form-control" id="rating" name="tupleModel.NewReview.Rating" min="1" max="5" value="@Model.NewReview?.Rating" required>
     </div>
 
     <div class="form-group">
         <label for="comment">Komentaras:</label>
-        <textarea class="form-control" id="comment" name="Comment" rows="4"></textarea>
+        <textarea class="form-control" id="comment" name="tupleModel.NewReview.Comment" rows="4">@Model.NewReview?.Comment</textarea>
     </div>
 
     <br />
     <button type="submit" class="btn btn-primary">Patvirtinti</button>
 </form>
-<!-- <br /> -->
-<!-- <a class="btn btn-dark" asp-area="" asp-controller="Products" asp-action="Product">Atgal</a> -->
+
+<a class="btn btn-dark" href="@Url.Action("Details", "Products", new { id = @Model.Product.ID })">Atgal į prekės aprašymą</a>

@@ -244,6 +244,7 @@ namespace Faxai.Controllers
             List<ReviewModel> reviews = reviewsDataView.ToTable().AsEnumerable().Select(row => new ReviewModel
             {
                 // Map database columns to ReviewModel properties
+                ID = Convert.ToInt32(row["ID"]),
                 Rating = Convert.ToInt32(row["Ivertis"]),
                 Comment = Convert.ToString(row["Komentaras"]),
                 CreationDate = Convert.ToDateTime(row["Sukurimo_Data"]),

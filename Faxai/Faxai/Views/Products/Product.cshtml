@@ -1,5 +1,9 @@
 ﻿@model Faxai.Models.ReviewModels.ReviewViewModel
 
+@{
+    var selectedReviewId = ViewData["SelectedReviewId"] as string;
+}
+
 <h2>Detali prekės informacija</h2>
 
 <div>
@@ -26,7 +30,7 @@
     </dl>
 </div>
 
-<a class="btn btn-dark" asp-area="" asp-controller="Home" asp-action="Index">Atgal</a>
+<a class="btn btn-dark" asp-area="" asp-controller="Home" asp-action="HomePage">Atgal</a>
 
 
 <h1>Prekės atsiliepimai</h1>
@@ -43,19 +47,19 @@
             <p class="review-text">@review.Comment</p>
         </div>
         <div class="col-2">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#fullReviewModal">
+            <a href="@Url.Action("FullReview", "Reviews", new { tupleModel = Model, id = review.ID })" class="btn btn-primary">
                 <i class="bi bi-eye"></i> Peržiūrėti
-            </button>
+            </a>
         </div>
         <div class="col-2">
-            <button class="btn btn-warning" data-toggle="modal" data-target="#editReviewModal">
+            <a href="@Url.Action("EditReviewForm", "Reviews", new { tupleModel = Model, id = review.ID })" class="btn btn-warning">
                 <i class="bi bi-pencil"></i> Redaguoti
-            </button>
+            </a>
         </div>
         <div class="col-2">
-            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteReviewModal">
+            <a href="@Url.Action("DeleteReviewForm", "Reviews", new { tupleModel = Model, id = review.ID })" class="btn btn-danger">
                 <i class="bi bi-trash"></i> Ištrinti
-            </button>
+            </a>
         </div>
     </div>
 }
@@ -72,57 +76,6 @@
             </div>
             <div class="modal-body">
                 @Html.Partial("../Reviews/CreateReviewForm", @Model)
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Full Review Modal -->
-<div class="modal fade" id="fullReviewModal" tabindex="-1" role="dialog" aria-labelledby="fullReviewModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="fullReviewModalLabel">Atsiliepimas</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                @Html.Partial("../Reviews/FullReview") 
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Edit Review Modal -->
-<div class="modal fade" id="editReviewModal" tabindex="-1" role="dialog" aria-labelledby="editReviewModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editReviewModalLabel">Redaguoti atsiliepimą</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                @Html.Partial("../Reviews/EditReviewForm") 
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Delete Review Modal -->
-<div class="modal fade" id="deleteReviewModal" tabindex="-1" role="dialog" aria-labelledby="deleteReviewModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteReviewModalLabel">Ištrinti atsiliepimą</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                @Html.Partial("../Reviews/DeleteReviewForm")
             </div>
         </div>
     </div>
